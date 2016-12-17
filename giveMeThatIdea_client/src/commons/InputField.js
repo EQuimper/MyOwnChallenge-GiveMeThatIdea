@@ -1,9 +1,10 @@
 import React from 'react';
 import { Message, Input } from 'semantic-ui-react';
 
-const InputField = ({ placeholder, input, icon, type, meta: { touched, error } }) => (
+const InputField = ({ placeholder, input, icon, type, meta: { asyncValidating, touched, error } }) => (
   <div>
     <Input
+      loading={asyncValidating}
       iconPosition="left"
       icon={icon}
       {...input}
