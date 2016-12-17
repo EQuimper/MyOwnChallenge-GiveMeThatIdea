@@ -13,7 +13,7 @@ const IdeaSchema = new Schema({
     minLength: [5, 'You need 5 charaters'],
     required: true
   },
-  authorId: {
+  author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
