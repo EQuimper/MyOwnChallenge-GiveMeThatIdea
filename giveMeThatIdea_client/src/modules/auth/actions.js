@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import {toastr} from 'react-redux-toastr';
 
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
@@ -22,6 +23,7 @@ export const loginUser = values => {
           token: res.data.token,
           message: res.data.message
         });
+        toastr.success('Successfully Login!', 'Welcome Back!');
         return browserHistory.push('/ideas');
       })
       .catch(err => {
@@ -29,10 +31,11 @@ export const loginUser = values => {
         if (err.response.data === 'Unauthorized') {
           errors = 'A error occur with your login action. PLZ try again!';
         }
-        return dispatch({
+        dispatch({
           type: LOGIN_USER_ERROR,
           message: errors || err.response.data
         });
+        return toastr.error('Authentication failed!');
       });
   }
 }
@@ -43,15 +46,22 @@ export const signupUser = values => {
     const { email, password } = values;
 
     return axios.post('/auth/signup', { email, password })
-      .then(res => dispatch({
-        type: SIGNUP_USER_SUCCESS,
-        user: res.data.user,
-        token: res.data.token,
-        message: res.data.message
-      }))
-      .catch(err => dispatch({
-        type: SIGNUP_USER_ERROR,
-        message: err
-      }));
+      .then(res => {
+        dispatch({
+          type: SIGNUP_USER_SUCCESS,
+          user: res.data.user,
+          token: res.data.token,
+          message: res.data.message
+        });
+        toastr.success('Successfully Register!', 'Welcome to GiveMeThatIdea!');
+        return browserHistory.push('/ideas');
+      })
+      .catch(err => {
+        dispatch({
+          type: SIGNUP_USER_ERROR,
+          message: err.response.data.message
+        });
+        return toastr.error('Error', err.response.data.message);
+      });
   }
 }
