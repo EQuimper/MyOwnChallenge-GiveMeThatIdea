@@ -18,7 +18,7 @@ const styles = {
 
 const Login = ({ handleSubmit, loginUser, valid }) => (
   <div style={styles.root}>
-    <Grid centered columns={3} verticalAlign="middle">
+    <Grid centered columns={3} style={{ height: '90vh' }} verticalAlign="middle">
       <Grid.Row>
         <Grid.Column>
           <Message
