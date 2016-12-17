@@ -22,6 +22,18 @@ const setUserInfo = user => ({
   id: user._id
 });
 
+export const asyncEmail = (req, res) => {
+  const { email } = req.body;
+  User.findOne({ 'local.email': email })
+    .then(user => {
+      if (user) {
+        return res.json({ message: 'Email taken!', exist: true });
+      }
+      return res.json({ message: 'Email available', exist: false });
+    })
+    .catch(err => res.json({ err }));
+};
+
 /*
 * LOGIN
 */
@@ -47,9 +59,10 @@ export const signup = (req, res) => {
     return res.status(422).json({ success: false, message: 'Email is not valid!' });
   }
 
-  User.findOne({ email })
+  User.findOne({ 'local.email': email })
     .then(auth => {
-      if (auth) { return res.status(422).json({ success: false, message: 'Email already userd!' }); }
+      console.log({ auth });
+      if (auth) { return res.status(422).json({ success: false, message: 'Email already used!' }); }
 
       const newUser = new User({ local: { email, password } });
 
