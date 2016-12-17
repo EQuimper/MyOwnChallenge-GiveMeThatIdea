@@ -1,8 +1,12 @@
+import axios from 'axios';
+
 export const signupValidation = values => {
   const errors = {};
 
   if (!values.password) {
     errors.password = 'Password is Required';
+  } else if (!values.confirmPassword) {
+    errors.confirmPassword = 'Confirm Password is Required';
   } else if (values.password !== values.confirmPassword) {
     errors.confirmPassword = 'Confirm Password must match the password';
   }
@@ -15,3 +19,14 @@ export const signupValidation = values => {
 
   return errors;
 };
+
+
+export const signupAsyncValidate = values => {
+  return axios.post('/auth/asyncemail', { email: values.email })
+    .then(res => {
+      console.log({ res });
+      if (res.data.exist) {
+        throw { email: res.data.message };
+      }
+    });
+}
