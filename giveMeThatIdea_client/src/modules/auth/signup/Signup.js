@@ -3,7 +3,7 @@ import { Link, browserHistory } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 import { Button, Checkbox, Form, Grid, Message, Icon } from 'semantic-ui-react';
 import { InputField } from '../../../commons';
-import { signupValidation } from './validation';
+import { signupValidation, signupAsyncValidate } from './validation';
 
 const styles = {
   root: {
@@ -24,7 +24,7 @@ const styles = {
 
 const Signup = ({ handleSubmit, signupUser, valid }) => (
   <div style={styles.root}>
-    <Grid centered columns={3} style={{ height: '90vh' }} verticalAlign="middle">
+    <Grid centered columns={3}>
       <Grid.Row>
         <Grid.Column>
           <Message
@@ -84,6 +84,8 @@ const Signup = ({ handleSubmit, signupUser, valid }) => (
 
 export default reduxForm({
   form: 'signup',
-  validate: signupValidation
+  validate: signupValidation,
+  asyncValidate: signupAsyncValidate,
+  asyncBlurFields: ['email']
 })(Signup);
 
