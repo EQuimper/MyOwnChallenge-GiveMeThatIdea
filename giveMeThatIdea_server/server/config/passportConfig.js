@@ -39,8 +39,7 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
 
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeader('authorization'),
-  secretOrKey: JWT_SECRET,
-  audience: 'http://localhost:3000'
+  secretOrKey: JWT_SECRET
 };
 
 const jwtLogin = new JWTStrategy(jwtOptions, (payload, done) => {
