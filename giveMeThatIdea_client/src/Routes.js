@@ -12,13 +12,23 @@ const UserIsAuthenticated = UserAuthWrapper({
   wrapperDisplayName: 'UserIsAuthenticated' // a nice name for this auth check
 });
 
+const VisibleOnlyNoUser = UserAuthWrapper({
+  authSelector: state => state.auth.user,
+  wrapperDisplayName: 'VisibleOnlyIfNotUser',
+  predicate: user => !user,
+  failureRedirectPath: '/ideas'
+});
+
 const Authenticated = UserIsAuthenticated(({ children }) => children);
+const OnlyNotUser = VisibleOnlyNoUser(({ children }) => children);
 
 export default () => (
   <Router history={history}>
     <Route path="/" component={App}>
-      <Route path="/login" component={LoginContainer} />
-      <Route path="/signup" component={SignupContainer} />
+      <Route component={OnlyNotUser}>
+        <Route path="/login" component={LoginContainer} />
+        <Route path="/signup" component={SignupContainer} />
+      </Route>
       <Route component={Authenticated}>
         <Route path="/ideas">
           <IndexRoute component={FeedIdea} />
