@@ -1,7 +1,12 @@
 import React from 'react';
+import { Grid } from 'semantic-ui-react';
 
 const FeedIdea = () => (
-  <h1>Feed</h1>
+  <Grid centered columns={1}>
+    <Grid.Column>
+      <h1>Feed</h1>
+    </Grid.Column>
+  </Grid>
 );
 
 export default FeedIdea;
