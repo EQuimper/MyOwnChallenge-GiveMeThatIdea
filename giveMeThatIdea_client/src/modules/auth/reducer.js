@@ -62,7 +62,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state,
         token: action.token,
         loading: false,
-        error: false
+        error: false,
+        user: action.user
       };
     case CHECK_TOKEN_ERROR:
       return INITIAL_STATE;
