@@ -4,7 +4,12 @@ import { routerActions } from 'react-router-redux';
 import { UserAuthWrapper } from 'redux-auth-wrapper';
 import { history } from './redux/store';
 import App from './App';
-import { LoginContainer, SignupContainer, CreateIdea, FeedIdea } from './modules';
+import {
+  LoginContainer,
+  SignupContainer,
+  CreateIdeaContainer,
+  FeedIdea
+} from './modules';
 
 const UserIsAuthenticated = UserAuthWrapper({
   authSelector: state => state.auth.user, // how to get the user state
@@ -32,7 +37,7 @@ export default () => (
       <Route component={Authenticated}>
         <Route path="/ideas">
           <IndexRoute component={FeedIdea} />
-          <Route path="new" component={CreateIdea} />
+          <Route path="new" component={CreateIdeaContainer} />
         </Route>
       </Route>
     </Route>
