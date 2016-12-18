@@ -1,5 +1,17 @@
 import Idea from './model';
 
+export const asyncIdeaTitle = (req, res) => {
+  const { title } = req.body;
+  Idea.findOne({ title })
+    .then(idea => {
+      if (idea) {
+        return res.json({ message: 'Title already take, plz be original!', exist: true });
+      }
+      return res.json({ message: 'Title available', exist: false });
+    })
+    .catch(err => res.json({ err }));
+};
+
 export const createIdea = (req, res) => {
   const { title, description, userId } = req.body;
 
