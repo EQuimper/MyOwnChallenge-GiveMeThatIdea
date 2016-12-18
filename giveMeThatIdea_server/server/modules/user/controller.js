@@ -11,7 +11,7 @@ const { JWT_SECRET } = serverConfig;
 const generateToken = user => jwt.sign({
   sub: user.id },
   JWT_SECRET,
-  { expiresIn: '10s' }
+  { expiresIn: '1h' }
 );
 
 /*
@@ -39,7 +39,7 @@ export const asyncEmail = (req, res) => {
 */
 export const login = (req, res, next) => {
   const user = setUserInfo(req.user);
-  res.send({ success: true, token: generateToken(user), user });
+  res.send({ success: true, token: `JWT ${generateToken(user)}`, user });
   return next();
 };
 
@@ -70,7 +70,7 @@ export const signup = (req, res) => {
         .then(user => res.status(201).json({
           success: true,
           message: 'Successfully register!',
-          token: generateToken(user),
+          token: `JWT ${generateToken(user)}`,
           user: setUserInfo(user)
         }))
         .catch(err => {
@@ -93,7 +93,7 @@ export const checkToken = (req, res) => {
     return res.status(401).json({ success: false, message: 'Must pass token' });
   }
 
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+  jwt.verify(token.replace(/^JWT\s/, ''), JWT_SECRET, (err, decoded) => {
     if (err) {
       if (err.name === 'TokenExpiredError') {
         return res.status(422).json({
@@ -109,7 +109,8 @@ export const checkToken = (req, res) => {
       .then(user => res.status(201).json({
         success: true,
         message: 'Token refresh!',
-        token: generateToken(user),
+        token: `JWT ${generateToken(user)}`,
+        user: setUserInfo(user)
       }))
       .catch(error => res.status(401).json({ success: false, message: 'Something wrong happen with the token!', error }));
   });
