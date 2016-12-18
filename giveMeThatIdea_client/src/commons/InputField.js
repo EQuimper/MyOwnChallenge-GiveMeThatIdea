@@ -5,7 +5,7 @@ const InputField = ({ placeholder, input, icon, type, meta: { asyncValidating, t
   <div>
     <Input
       loading={asyncValidating}
-      iconPosition="left"
+      iconPosition={icon && 'left'}
       icon={icon}
       {...input}
       placeholder={placeholder}
