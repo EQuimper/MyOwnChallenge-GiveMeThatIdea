@@ -77,7 +77,8 @@ export const checkToken = () => {
     axios.post('/auth/checkToken', { token })
       .then(res => dispatch({
         type: CHECK_TOKEN_SUCCESS,
-        token: res.data.token
+        token: res.data.token,
+        user: res.data.user
       }))
       .catch(err => {
         console.log({ err });
@@ -85,14 +86,7 @@ export const checkToken = () => {
         if (err.response.data.expireTime) {
           toastr.error('You need to authenticate again', message);
         }
-        return dispatch(tokenError())
+        return dispatch({ type: CHECK_TOKEN_ERROR })
       });
-  }
-}
-
-const tokenError = () => {
-  localStorage.removeItem('giveMeThatIdea.auth');
-  return {
-    type: CHECK_TOKEN_ERROR
   }
 }
