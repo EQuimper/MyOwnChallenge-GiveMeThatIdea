@@ -10,6 +10,10 @@ export const SIGNUP_USER = 'SIGNUP_USER';
 export const SIGNUP_USER_SUCCESS = 'SIGNUP_USER_SUCCESS';
 export const SIGNUP_USER_ERROR = 'SIGNUP_USER_ERROR';
 
+export const CHECK_TOKEN = 'CHECK_TOKEN';
+export const CHECK_TOKEN_SUCCESS = 'CHECK_TOKEN_SUCCESS';
+export const CHECK_TOKEN_ERROR = 'CHECK_TOKEN_ERROR';
+
 export const loginUser = values => {
   return dispatch => {
     dispatch({ type: LOGIN_USER });
@@ -63,5 +67,32 @@ export const signupUser = values => {
         });
         return toastr.error('Error', err.response.data.message);
       });
+  }
+}
+
+export const checkToken = () => {
+  return (dispatch, getState) => {
+    dispatch({ type: CHECK_TOKEN });
+    const { token } = getState().auth;
+    axios.post('/auth/checkToken', { token })
+      .then(res => dispatch({
+        type: CHECK_TOKEN_SUCCESS,
+        token: res.data.token
+      }))
+      .catch(err => {
+        console.log({ err });
+        const { expireTime, message } = err.response.data;
+        if (err.response.data.expireTime) {
+          toastr.error('You need to authenticate again', message);
+        }
+        return dispatch(tokenError())
+      });
+  }
+}
+
+const tokenError = () => {
+  localStorage.removeItem('giveMeThatIdea.auth');
+  return {
+    type: CHECK_TOKEN_ERROR
   }
 }

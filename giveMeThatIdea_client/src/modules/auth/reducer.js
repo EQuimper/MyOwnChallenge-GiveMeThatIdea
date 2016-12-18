@@ -4,7 +4,10 @@ import {
   LOGIN_USER_ERROR,
   SIGNUP_USER,
   SIGNUP_USER_ERROR,
-  SIGNUP_USER_SUCCESS
+  SIGNUP_USER_SUCCESS,
+  CHECK_TOKEN_ERROR,
+  CHECK_TOKEN_SUCCESS,
+  CHECK_TOKEN
 } from './actions';
 
 const INITIAL_STATE = {
@@ -51,6 +54,18 @@ export default (state = INITIAL_STATE, action) => {
         message: action.message,
         error: true
       };
+    case CHECK_TOKEN:
+      return { ...state,
+        loading: true
+      }
+    case CHECK_TOKEN_SUCCESS:
+      return { ...state,
+        token: action.token,
+        loading: false,
+        error: false
+      };
+    case CHECK_TOKEN_ERROR:
+      return INITIAL_STATE;
     default:
       return state;
   }
