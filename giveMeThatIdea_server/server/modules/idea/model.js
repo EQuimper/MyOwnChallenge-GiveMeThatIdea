@@ -5,12 +5,12 @@ const IdeaSchema = new Schema({
     type: String,
     unique: true,
     trim: true,
-    minLength: [3, 'You need at least 3 charaters for be a valid title'],
+    minLength: [4, 'You need at least 4 charaters for be a valid title'],
     required: true
   },
   description: {
     type: String,
-    minLength: [5, 'You need 5 charaters'],
+    minLength: [30, 'You need 30 charaters'],
     required: true
   },
   author: {
