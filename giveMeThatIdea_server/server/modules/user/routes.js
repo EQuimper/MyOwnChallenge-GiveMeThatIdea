@@ -10,5 +10,6 @@ const requireLogin = passport.authenticate('local', { session: false });
 userRoutes.route('/auth/signup').post(UserController.signup);
 userRoutes.route('/auth/login').post(requireLogin, UserController.login);
 userRoutes.route('/auth/asyncemail').post(UserController.asyncEmail);
+userRoutes.route('/auth/checkToken').post(UserController.checkToken);
 
 export default userRoutes;
