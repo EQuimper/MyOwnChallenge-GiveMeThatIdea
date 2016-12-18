@@ -1,3 +1,4 @@
 import InputField from './InputField';
+import TextAreaField from './TextAreaField';
 
-export { InputField };
+export { InputField, TextAreaField };
