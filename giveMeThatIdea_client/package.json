@@ -19,6 +19,7 @@
     "redux-auth-wrapper": "^0.9.0",
     "redux-form": "^6.3.2",
     "redux-pack": "^0.1.2",
+    "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.1.0",
     "semantic-ui-react": "^0.62.2",
     "validator": "^6.2.0"
