@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
-import {toastr} from 'react-redux-toastr';
+import { toastr } from 'react-redux-toastr';
+// import { instance } from '../../App';
+
+export const UNAUTH_USER = 'UNAUTH_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
 
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
@@ -14,79 +18,137 @@ export const CHECK_TOKEN = 'CHECK_TOKEN';
 export const CHECK_TOKEN_SUCCESS = 'CHECK_TOKEN_SUCCESS';
 export const CHECK_TOKEN_ERROR = 'CHECK_TOKEN_ERROR';
 
-export const loginUser = values => {
-  return dispatch => {
-    dispatch({ type: LOGIN_USER });
-    const { email, password } = values;
+export const loginUser = values => dispatch => {
+  dispatch({ type: LOGIN_USER });
+  const { email, password } = values;
 
-    return axios.post('/auth/login', { email, password })
-      .then(res => {
-        dispatch({
-          type: LOGIN_USER_SUCCESS,
-          user: res.data.user,
-          token: res.data.token,
-          message: res.data.message
-        });
-        toastr.success('Successfully Login!', 'Welcome Back!');
-        return browserHistory.push('/ideas');
-      })
-      .catch(err => {
-        let errors;
-        if (err.response.data === 'Unauthorized') {
-          errors = 'A error occur with your login action. PLZ try again!';
-        }
-        dispatch({
-          type: LOGIN_USER_ERROR,
-          message: errors || err.response.data
-        });
-        return toastr.error('Authentication failed!');
-      });
-  }
-}
-
-export const signupUser = values => {
-  return dispatch => {
-    dispatch({ type: SIGNUP_USER });
-    const { email, password } = values;
-
-    return axios.post('/auth/signup', { email, password })
-      .then(res => {
-        dispatch({
-          type: SIGNUP_USER_SUCCESS,
-          user: res.data.user,
-          token: res.data.token,
-          message: res.data.message
-        });
-        toastr.success('Successfully Register!', 'Welcome to GiveMeThatIdea!');
-        return browserHistory.push('/ideas');
-      })
-      .catch(err => {
-        dispatch({
-          type: SIGNUP_USER_ERROR,
-          message: err.response.data.message
-        });
-        return toastr.error('Error', err.response.data.message);
-      });
-  }
-}
-
-export const checkToken = () => {
-  return (dispatch, getState) => {
-    dispatch({ type: CHECK_TOKEN });
-    const { token } = getState().auth;
-    axios.post('/auth/checkToken', { token })
-      .then(res => dispatch({
-        type: CHECK_TOKEN_SUCCESS,
+  return axios.post('/auth/login', { email, password })
+    .then(res => {
+      dispatch({
+        type: LOGIN_USER_SUCCESS,
+        user: res.data.user,
         token: res.data.token,
-        user: res.data.user
-      }))
-      .catch(err => {
-        console.log({ err });
-        const { expireTime, message } = err.response.data;
-        if (err.response.data.expireTime) {
-          toastr.error('You need to authenticate again', message);
-        }
-        return dispatch({ type: CHECK_TOKEN_ERROR })
+        message: res.data.message
       });
+      axios.defaults.headers.common['Authorization'] = res.data.token;
+      console.group('HEaders');
+      console.log(axios.defaults);
+      toastr.success('Successfully Login!', 'Welcome Back!');
+      return browserHistory.push('/ideas');
+    })
+    .catch(err => {
+      let errors;
+      if (err.response.status === 401) {
+        errors = 'A error occur with your login action. PLZ try again!';
+      }
+      dispatch({
+        type: LOGIN_USER_ERROR,
+        message: errors || err.response.data
+      });
+      return toastr.error('Authentication failed!');
+    });
+}
+
+export const signupUser = values => dispatch => {
+  dispatch({ type: SIGNUP_USER });
+  const { email, password } = values;
+
+  return axios.post('/auth/signup', { email, password })
+    .then(res => {
+      dispatch({
+        type: SIGNUP_USER_SUCCESS,
+        user: res.data.user,
+        token: res.data.token,
+        message: res.data.message
+      });
+      toastr.success('Successfully Register!', 'Welcome to GiveMeThatIdea!');
+      axios.defaults.headers.common['Authorization'] = res.data.token;
+      return browserHistory.push('/ideas');
+    })
+    .catch(err => {
+      dispatch({
+        type: SIGNUP_USER_ERROR,
+        message: err.response.data.message
+      });
+      return toastr.error('Error', err.response.data.message);
+    });
+}
+
+export const checkToken = () => (dispatch, getState) => {
+  dispatch({ type: CHECK_TOKEN });
+  const { token } = getState().auth;
+  axios.post('/auth/checkToken', { token })
+    .then(res => dispatch({
+      type: CHECK_TOKEN_SUCCESS,
+      token: res.data.token,
+      user: res.data.user
+    }))
+    .catch(err => {
+      const { expireTime, message } = err.response.data;
+      if (err.response.data.expireTime) {
+        toastr.error('You need to authenticate again', message);
+      }
+      return dispatch({ type: CHECK_TOKEN_ERROR })
+    });
+}
+
+export const logoutUser = () => (dispatch) => {
+  if (confirm('Are you sure you want to logout?')) {
+    axios.defaults.headers.common['Authorization'] = '';
+    console.group("Axios");
+    console.log(axios.defaults.headers);
+    console.groupEnd('END');
+    browserHistory.push('/login');
+    dispatch({
+      type: LOGOUT_USER
+    });
   }
 }
+
+export const unauthUser = message => dispatch => {
+  console.log('UNUAUTH');
+  dispatch({ type: UNAUTH_USER });
+  toastr.error('Unauthorized', message);
+  return browserHistory.push('/login');
+}
+
+export const resetPassword = resetToken => (dispatch, getState) => {
+  const { password, confirmPassword } = getState().form.resetPassword.values;
+
+  if (password !== confirmPassword) {
+    return;
+  }
+
+  axios.post(`/auth/resetPassword/${resetToken}/newPassword`, { password })
+    .then(res => {
+      toastr.success('Password Successfully Changed!');
+      browserHistory.push('/login');
+    })
+    .catch(err => console.log({ err }));
+}
+
+
+// export const authErrorHandler = (dispatch, error) => {
+//   let errorMessage = '';
+
+//   if (error.da ta.error) {
+//     errorMessage = error.data.error;
+//   } else if (error.data{
+//     errorMessage = error.data;
+//   } else {
+//     errorMessage = error;
+//   }
+
+//   if (error.status === 401) {
+//     dispatch({
+//       type: type,
+//       payload: 'You are not authorized to do this. Please login and try again.'
+//     });
+//     logoutUser();
+//   } else {
+//     dispatch({
+//       type: type,
+//       payload: errorMessage
+//     });
+//   }
+// }
