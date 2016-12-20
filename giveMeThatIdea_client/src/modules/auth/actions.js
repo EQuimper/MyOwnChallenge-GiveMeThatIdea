@@ -127,28 +127,21 @@ export const resetPassword = resetToken => (dispatch, getState) => {
     .catch(err => console.log({ err }));
 }
 
+export const forgotPassword = values => dispatch => {
+  const { email } = values;
 
-// export const authErrorHandler = (dispatch, error) => {
-//   let errorMessage = '';
+  if (!email) {
+    return;
+  }
 
-//   if (error.da ta.error) {
-//     errorMessage = error.data.error;
-//   } else if (error.data{
-//     errorMessage = error.data;
-//   } else {
-//     errorMessage = error;
-//   }
-
-//   if (error.status === 401) {
-//     dispatch({
-//       type: type,
-//       payload: 'You are not authorized to do this. Please login and try again.'
-//     });
-//     logoutUser();
-//   } else {
-//     dispatch({
-//       type: type,
-//       payload: errorMessage
-//     });
-//   }
-// }
+  axios.post('/auth/forgotPassword', { email })
+    .then(res => {
+      toastr.success('Success!', res.data.message);
+      browserHistory.push('/login');
+      return dispatch({ type: UNAUTH_USER });
+    })
+    .catch(err => {
+      toastr.error('Something Wrong happen', 'Try again!');
+      return browserHistory.push('/forgotPassword');
+    });
+}
