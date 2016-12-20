@@ -7,7 +7,9 @@ import {
   SIGNUP_USER_SUCCESS,
   CHECK_TOKEN_ERROR,
   CHECK_TOKEN_SUCCESS,
-  CHECK_TOKEN
+  CHECK_TOKEN,
+  LOGOUT_USER,
+  UNAUTH_USER
 } from './actions';
 
 const INITIAL_STATE = {
@@ -66,6 +68,8 @@ export default (state = INITIAL_STATE, action) => {
         user: action.user
       };
     case CHECK_TOKEN_ERROR:
+    case LOGOUT_USER:
+    case UNAUTH_USER:
       return INITIAL_STATE;
     default:
       return state;
