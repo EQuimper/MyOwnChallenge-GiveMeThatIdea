@@ -1,15 +1,15 @@
 import { Router } from 'express';
-import passport from 'passport';
 import * as UserController from './controller';
-import '../../config/passportConfig';
+import { requireAuth, requireLogin, checkToken } from '../../helpers';
 
-const userRoutes = new Router();
+const routes = new Router();
 
-const requireLogin = passport.authenticate('local', { session: false });
+routes.route('/auth/signup').post(UserController.signup);
+routes.route('/auth/login').post(requireLogin, UserController.login);
+routes.route('/auth/asyncemail').post(requireAuth, UserController.asyncEmail);
+routes.route('/auth/checkToken').post(checkToken);
+routes.route('/auth/forgotPassword').post(UserController.forgotPassword);
+routes.route('/auth/resetPassword/:resetToken').post(UserController.resetPassword);
+routes.route('/auth/resetPassword/:resetToken/newPassword').post(UserController.changePassword);
 
-userRoutes.route('/auth/signup').post(UserController.signup);
-userRoutes.route('/auth/login').post(requireLogin, UserController.login);
-userRoutes.route('/auth/asyncemail').post(UserController.asyncEmail);
-userRoutes.route('/auth/checkToken').post(UserController.checkToken);
-
-export default userRoutes;
+export default routes;
