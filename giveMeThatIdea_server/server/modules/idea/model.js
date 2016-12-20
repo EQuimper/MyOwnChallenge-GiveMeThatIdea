@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import { slugifyText } from '../../helpers';
 
 const IdeaSchema = new Schema({
   title: {
@@ -22,7 +23,18 @@ const IdeaSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Category',
     required: true,
+  },
+  slug: {
+    type: String,
+    trim: true,
+    unique: true,
+    lowercase: true
   }
+});
+
+IdeaSchema.pre('save', function(next) {
+  this.slug = slugifyText(this.title);
+  next();
 });
 
 export default mongoose.model('Idea', IdeaSchema);
