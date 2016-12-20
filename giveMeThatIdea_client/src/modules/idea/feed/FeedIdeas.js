@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, Card, Container, Button } from 'semantic-ui-react';
+import { Grid, Card, Container, Button, Icon, Segment, Label } from 'semantic-ui-react';
+import { browserHistory } from 'react-router';
 import { truncateString } from '../../../helpers/truncateString';
 
 const FeedIdeas = ({ ideas }) => (
@@ -8,15 +9,13 @@ const FeedIdeas = ({ ideas }) => (
       <Card.Group>
         {ideas.map((idea, i) => (
           <Card key={i}>
-            <Card.Content>
+            <Label attached="top">{idea.category.name}</Label>
+            <Card.Content label={{ as: 'a', corner: 'left', icon: 'heart' }}>
               <Card.Header>
                 {truncateString(idea.title, 25)}
               </Card.Header>
               <Card.Meta>
                 10 followers | 10 comments
-              </Card.Meta>
-              <Card.Meta>
-                Category: <b>{idea.category ? idea.category.name : 'hello'}</b>
               </Card.Meta>
               <Card.Description>
                 {truncateString(idea.description, 150)}
@@ -31,7 +30,13 @@ const FeedIdeas = ({ ideas }) => (
             <Card.Content extra>
               <div className='ui two buttons'>
                 <Button basic color="blue">Follow</Button>
-                <Button basic color="black">See More</Button>
+                <Button
+                  basic
+                  color="black"
+                  onClick={() => browserHistory.push(`/ideas/${idea.slug}`)}
+                >
+                  See More
+                </Button>
               </div>
             </Card.Content>
           </Card>
