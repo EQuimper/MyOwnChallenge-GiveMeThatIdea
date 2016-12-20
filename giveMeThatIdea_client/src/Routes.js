@@ -10,7 +10,7 @@ import {
   CreateIdeaContainer,
   ResetPasswordContainer,
   ForgotPasswordContainer,
-  FeedIdea
+  FeedIdeasContainer
 } from './modules';
 
 const UserIsAuthenticated = UserAuthWrapper({
@@ -40,7 +40,7 @@ export default () => (
       </Route>
       <Route component={Authenticated}>
         <Route path="/ideas">
-          <IndexRoute component={FeedIdea} />
+          <IndexRoute component={FeedIdeasContainer} />
           <Route path="new" component={CreateIdeaContainer} />
         </Route>
       </Route>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Container } from 'semantic-ui-react';
 import { NavBar, SideMenu } from './modules';
 import { checkToken, logoutUser } from './modules/auth/actions';
 
@@ -50,11 +50,13 @@ class App extends Component {
         {user ? (
           <Grid columns={2}>
             <Grid.Row>
-              <Grid.Column width={1}>
+              <Grid.Column width={2}>
                 <SideMenu />
               </Grid.Column>
-              <Grid.Column width={15}>
-                {children}
+              <Grid.Column width={14}>
+                <Container>
+                  {children}
+                </Container>
               </Grid.Column>
             </Grid.Row>
           </Grid>
