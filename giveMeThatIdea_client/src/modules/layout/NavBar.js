@@ -2,10 +2,10 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import { Menu, Container } from 'semantic-ui-react'
 
-const NavBar = ({ path, auth, logoutUser }) => (
+const NavBar = ({ path, auth, toggleLogout }) => (
   <Menu pointing secondary>
     <Container>
-      <Menu.Item onClick={() => browserHistory.push('/')}>
+      <Menu.Item onClick={() => browserHistory.push(auth ? '/ideas' : '/')}>
         GetMeThatIdea
       </Menu.Item>
       {!auth ? (
@@ -22,7 +22,7 @@ const NavBar = ({ path, auth, logoutUser }) => (
           <Menu.Item active={path === '/help'} onClick={() => browserHistory.push('/help')}>
             How that work?
           </Menu.Item>
-          <Menu.Item onClick={() => logoutUser()}>
+          <Menu.Item onClick={() => toggleLogout()}>
             Logout
           </Menu.Item>
         </Menu.Menu>
