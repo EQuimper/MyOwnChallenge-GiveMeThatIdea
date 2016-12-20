@@ -3,7 +3,6 @@ import { Form, Message } from 'semantic-ui-react'
 
 const SelectField = ({ input, options, placeholder, meta: { touched, error }, ...custom }) => (
   <div>
-    {console.log({ input, custom, options })}
     <Form.Select
       placeholder={placeholder}
       options={options}
