@@ -28,7 +28,6 @@ export const ideaTitleAsyncValidate = values => {
   return axios.post('/ideas/asyncIdeaTitle', { title: values.title })
     .then(
       res => {
-        console.log({ res });
         if (res.data.exist) {
           throw { title: res.data.message };
         }
