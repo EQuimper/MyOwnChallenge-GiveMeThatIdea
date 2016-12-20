@@ -1,16 +1,13 @@
 import { Router } from 'express';
-import passport from 'passport';
 import * as IdeaController from './controller';
-import '../../config/passportConfig';
+import { requireAuth } from '../../helpers';
 
-const requireAuth = passport.authenticate('jwt', { session: false });
+const routes = new Router();
 
-const ideaRoutes = new Router();
+routes.route('/ideas/new').post(requireAuth, IdeaController.createIdea);
+routes.route('/ideas/:id').delete(requireAuth, IdeaController.deleteIdea);
+routes.route('/ideas/:id').put(requireAuth, IdeaController.updateIdea);
+routes.route('/ideas/').get(requireAuth, IdeaController.getAllIdea);
+routes.route('/ideas/asyncIdeaTitle').post(requireAuth, IdeaController.asyncIdeaTitle);
 
-ideaRoutes.route('/ideas/new').post(requireAuth, IdeaController.createIdea);
-ideaRoutes.route('/ideas/:id').delete(requireAuth, IdeaController.deleteIdea);
-ideaRoutes.route('/ideas/:id').put(requireAuth, IdeaController.updateIdea);
-ideaRoutes.route('/ideas/').get(requireAuth, IdeaController.getAllIdea);
-ideaRoutes.route('/ideas/asyncIdeaTitle').post(requireAuth, IdeaController.asyncIdeaTitle);
-
-export default ideaRoutes;
+export default routes;
