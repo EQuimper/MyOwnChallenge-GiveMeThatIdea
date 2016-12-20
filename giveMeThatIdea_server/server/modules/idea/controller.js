@@ -1,4 +1,5 @@
 import Idea from './model';
+import { Category } from '../category';
 
 export const asyncIdeaTitle = (req, res) => {
   const { title } = req.body;
@@ -13,7 +14,7 @@ export const asyncIdeaTitle = (req, res) => {
 };
 
 export const createIdea = (req, res) => {
-  const { title, description, userId } = req.body;
+  const { title, description, category, userId } = req.body;
 
   if (!title) {
     return res.status(422).json({ success: false, message: 'A title is required!' });
@@ -21,20 +22,31 @@ export const createIdea = (req, res) => {
     return res.status(422).json({ success: false, message: 'A description is required!' });
   } else if (!userId) {
     return res.status(422).json({ success: false, message: 'Problem cause no userId!' });
+  } else if (!category) {
+    return res.status(422).json({ success: false, message: 'Problem cause no category!' });
   }
 
-  const newIdea = new Idea({ title, description, author: userId });
-
-  newIdea.save()
-    .then(idea => {
-      return res.status(201).json({ success: true, message: 'Successfully created!', idea });
-    })
-    .catch(err => {
-      let error;
-      if (err.code === 11000) {
-        error = 'Duplicate idea title, plz provide a other one!';
-      }
-      return res.status(422).json({ success: false, message: error || err });
+  Category.findOne({ name: category })
+    .then(cat => {
+      console.log('CAT', cat._id);
+      const newIdea = new Idea({ title, description, category: cat._id, author: userId });
+      console.log({ newIdea });
+      newIdea.save()
+        .then(idea => {
+          console.log("hello");
+          cat.ideas.push(idea);
+          cat.save()
+            .then(() => {
+              return res.status(201).json({ success: true, message: 'Successfully created!', idea });
+            });
+        })
+        .catch(err => {
+          let error;
+          if (err.code === 11000) {
+            error = 'Duplicate idea title, plz provide a other one!';
+          }
+          return res.status(422).json({ success: false, message: error || err });
+        });
     });
 };
 
