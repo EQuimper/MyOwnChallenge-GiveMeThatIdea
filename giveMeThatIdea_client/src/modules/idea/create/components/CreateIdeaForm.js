@@ -1,11 +1,17 @@
 import React from 'react';
 import { Button, Checkbox, Form, Grid } from 'semantic-ui-react';
 import { reduxForm, Field } from 'redux-form';
-import { InputField, TextAreaField } from '../../../../commons';
+import { InputField, TextAreaField, SelectField } from '../../../../commons';
 import { createIdeaValidation, ideaTitleAsyncValidate } from './validation';
 
-const CreateIdeaForm = () => (
-  <Form>
+const optionsMap = arr => {
+  const nArr = [];
+  arr.map(i => nArr.push({ text: i.name, value: i._id }));
+  return nArr;
+};
+
+const CreateIdeaForm = ({ valid, categories, handleSubmit, createIdea }) => (
+  <Form onSubmit={handleSubmit(createIdea)}>
     <Form.Field>
       <label>Title</label>
       <Field
@@ -24,7 +30,16 @@ const CreateIdeaForm = () => (
         component={TextAreaField}
       />
     </Form.Field>
-    <Button type='submit'>Create Idea</Button>
+    <Form.Field>
+      <label>Category</label>
+      <Field
+        placeholder="Category"
+        component={SelectField}
+        name="category"
+        options={optionsMap(categories)}
+      />
+    </Form.Field>
+    <Button primary type="submit" disabled={!valid}>Create Idea</Button>
   </Form>
 );
 

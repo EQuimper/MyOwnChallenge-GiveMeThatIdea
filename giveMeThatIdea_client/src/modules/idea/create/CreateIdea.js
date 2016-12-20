@@ -28,7 +28,7 @@ class CreateIdea extends Component {
       <Grid centered columns={2}>
         <Grid.Column>
           <h1>Create an Idea</h1>
-          <CreateIdeaForm categories={this.state.categories} />
+          <CreateIdeaForm categories={this.state.categories} createIdea={this.props.createIdea} />
         </Grid.Column>
       </Grid>
     );
