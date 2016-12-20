@@ -14,7 +14,6 @@ export const asyncIdeaTitle = (req, res) => {
 };
 
 export const createIdea = (req, res) => {
-  console.log(req.body);
   const { title, description, category, userId } = req.body;
 
   if (!title) {
@@ -55,8 +54,6 @@ export const deleteIdea = (req, res) => {
 
   Idea.findById(id)
     .then(idea => {
-      console.log({ idea });
-      console.log({ userId });
       if (!userId) {
         return res.status(422).json({ success: false, message: 'Cannot delete need a userId' });
       }
@@ -96,13 +93,26 @@ export const updateIdea = (req, res) => {
     .catch(error => res.status(422).json({ success: false, message: 'Cannot updated!', error }));
 };
 
+const unselectAuthor = '-local.password -updatedAt -createdAt -__v -role';
+const unselectCategory = '-__V';
+
 export const getAllIdea = (req, res) => {
   Idea
     .find({})
     .sort({ createdAt: -1 })
-    // make sure we don't send the password and other unused field
-    .populate('author', '-local.password -updatedAt -createdAt -__v')
-    .populate('category')
+    .populate('author', unselectAuthor)
+    .populate('category', unselectCategory)
     .then(ideas => res.status(200).json({ success: true, ideas }))
     .catch(error => res.status(400).json({ success: false, error }));
+};
+
+
+export const getOneIdea = (req, res) => {
+  Idea.findOne({ slug: req.params.slug })
+    .populate('author', unselectAuthor)
+    .populate('category', unselectCategory)
+    .then(
+      idea => res.status(200).json({ success: true, idea }),
+      error => res.status(422).json({ success: false, error })
+    );
 };
