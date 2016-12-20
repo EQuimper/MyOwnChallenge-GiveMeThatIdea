@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 import { toastr } from 'react-redux-toastr';
+import { toggleLogout } from '../index';
 // import { instance } from '../../App';
 
 export const UNAUTH_USER = 'UNAUTH_USER';
@@ -93,16 +94,13 @@ export const checkToken = () => (dispatch, getState) => {
 }
 
 export const logoutUser = () => (dispatch) => {
-  if (confirm('Are you sure you want to logout?')) {
-    axios.defaults.headers.common['Authorization'] = '';
-    console.group("Axios");
-    console.log(axios.defaults.headers);
-    console.groupEnd('END');
-    browserHistory.push('/login');
-    dispatch({
-      type: LOGOUT_USER
-    });
-  }
+  dispatch(toggleLogout());
+  toastr.error('BYEEEEE!', 'Hope you coming back soon!');
+  axios.defaults.headers.common['Authorization'] = '';
+  browserHistory.push('/login');
+  dispatch({
+    type: LOGOUT_USER
+  });
 }
 
 export const unauthUser = message => dispatch => {
