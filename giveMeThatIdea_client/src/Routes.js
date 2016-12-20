@@ -9,6 +9,7 @@ import {
   SignupContainer,
   CreateIdeaContainer,
   ResetPasswordContainer,
+  ForgotPasswordContainer,
   FeedIdea
 } from './modules';
 
@@ -35,6 +36,7 @@ export default () => (
         <Route path="/login" component={LoginContainer} />
         <Route path="/signup" component={SignupContainer} />
         <Route path="/resetPassword/:resetToken" component={ResetPasswordContainer} />
+        <Route path="/forgotPassword" component={ForgotPasswordContainer} />
       </Route>
       <Route component={Authenticated}>
         <Route path="/ideas">
