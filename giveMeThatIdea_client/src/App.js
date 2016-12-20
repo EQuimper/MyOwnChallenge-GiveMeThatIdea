@@ -34,14 +34,16 @@ console.log(axios.defaults.headers);
 
 class App extends Component {
   componentWillMount() {
-    this.props.checkToken();
+    if (this.props.auth.user) {
+      this.props.checkToken();
+    }
   }
   render() {
     const { children, location, auth, logoutUser } = this.props;
     const { user, token } = auth;
-    // if (user) {
-    //   axios.defaults.headers.common['Authorization'] = token;
-    // }
+    if (user) {
+      axios.defaults.headers.common['Authorization'] = token;
+    }
     return (
       <div>
         <NavBar path={location.pathname} auth={user} logoutUser={logoutUser} />
