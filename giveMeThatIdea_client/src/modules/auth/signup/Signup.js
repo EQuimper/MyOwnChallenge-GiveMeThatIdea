@@ -8,23 +8,12 @@ import { signupValidation, signupAsyncValidate } from './validation';
 const styles = {
   root: {
     position: 'relative'
-  },
-  buttonCancel: {
-    position: 'absolute',
-    top: '5%',
-    right: '5%'
   }
 }
 
-// <div style={styles.buttonCancel}>
-//       <Button circular basic color="black" size="big" onCLick={() => browserHistory.push('/')}>
-//         <Icon name="cancel" />
-//       </Button>
-//     </div>
-
 const Signup = ({ handleSubmit, signupUser, valid }) => (
   <div style={styles.root}>
-    <Grid centered columns={3}>
+    <Grid centered columns={3} style={{ height: '90vh' }} verticalAlign="middle">
       <Grid.Row>
         <Grid.Column>
           <Message
