@@ -1,9 +1,9 @@
 import React from 'react';
-import { Message, TextArea } from 'semantic-ui-react';
+import { Message, Form } from 'semantic-ui-react';
 
 const TextAreaField = ({ placeholder, input, type, meta: { touched, error } }) => (
   <div>
-    <TextArea
+    <Form.TextArea
       {...input}
       placeholder={placeholder}
       type={type}
