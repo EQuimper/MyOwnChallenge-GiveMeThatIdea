@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import passport from 'passport';
 import serverConfig from './config/serverConfig';
 import './config/dbConfig';
-import { userRoutes, ideaRoutes } from './modules';
+import { userRoutes, ideaRoutes, categoryRoutes } from './modules';
 
 const { PORT } = serverConfig;
 
@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(passport.initialize());
 
-app.use('/api/v1', [userRoutes, ideaRoutes]);
+app.use('/api/v1', [userRoutes, ideaRoutes, categoryRoutes]);
 
 app.listen(PORT, err => {
   if (err) return console.log(`Error happen: ${err}`); // eslint-disable-line
