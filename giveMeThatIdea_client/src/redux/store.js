@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import throttle from 'lodash/throttle';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createLogger from 'redux-logger';
+import promise from 'redux-promise-middleware';
 import reducers from './reducers';
 import { loadState, saveState } from '../helpers/localStorage';
 
@@ -13,6 +14,7 @@ const persistedState = loadState();
 
 const middlewares = [
   createLogger(),
+  promise(),
   thunk,
   routingMiddleware
 ];
