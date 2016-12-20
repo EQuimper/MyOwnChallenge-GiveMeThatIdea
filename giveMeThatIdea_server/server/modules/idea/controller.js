@@ -14,6 +14,7 @@ export const asyncIdeaTitle = (req, res) => {
 };
 
 export const createIdea = (req, res) => {
+  console.log(req.body);
   const { title, description, category, userId } = req.body;
 
   if (!title) {
@@ -26,14 +27,11 @@ export const createIdea = (req, res) => {
     return res.status(422).json({ success: false, message: 'Problem cause no category!' });
   }
 
-  Category.findOne({ name: category })
+  Category.findById(category)
     .then(cat => {
-      console.log('CAT', cat._id);
       const newIdea = new Idea({ title, description, category: cat._id, author: userId });
-      console.log({ newIdea });
       newIdea.save()
         .then(idea => {
-          console.log("hello");
           cat.ideas.push(idea);
           cat.save()
             .then(() => {
@@ -47,7 +45,8 @@ export const createIdea = (req, res) => {
           }
           return res.status(422).json({ success: false, message: error || err });
         });
-    });
+    })
+    .catch(error => res.status(422).json({ success: false, error }));
 };
 
 export const deleteIdea = (req, res) => {
@@ -103,6 +102,7 @@ export const getAllIdea = (req, res) => {
     .sort({ createdAt: -1 })
     // make sure we don't send the password and other unused field
     .populate('author', '-local.password -updatedAt -createdAt -__v')
+    .populate('category')
     .then(ideas => res.status(200).json({ success: true, ideas }))
     .catch(error => res.status(400).json({ success: false, error }));
 };
