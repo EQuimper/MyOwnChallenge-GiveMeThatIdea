@@ -49,6 +49,10 @@ const Login = ({ handleSubmit, loginUser, valid }) => (
             </Form.Field>
             <Button disabled={!valid} primary type="submit">Login</Button>
           </Form>
+          <Message attached="bottom" warning>
+            <Icon name="help" />
+            Forgot Password?&nbsp;<Link to="/forgotPassword">Click here</Link>
+          </Message>
           <Message attached="bottom" info>
             <Icon name="help" />
             No account yet?&nbsp;<Link to="/signup">Register here</Link>&nbsp;instead.
