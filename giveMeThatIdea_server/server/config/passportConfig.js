@@ -42,7 +42,6 @@ const jwtOptions = {
 };
 
 const jwtLogin = new JWTStrategy(jwtOptions, (payload, done) => {
-  console.log(payload);
   User.findById(payload.sub)
     .then(user => {
       if (!user) { return done(null, false); }
