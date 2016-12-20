@@ -130,11 +130,11 @@ export const changePassword = (req, res) => {
       if (!user) {
         return res.status(422).json({ success: false, message: 'ERROR ' });
       }
-
+      // no need anymore
       user.resetPasswordToken = undefined; // eslint-disable-line
       user.resetPasswordExpires = undefined; // eslint-disable-line
-
-      user.password = password; // eslint-disable-line
+      // make use of new password
+      user.local.password = password; // eslint-disable-line
 
       user.save()
         .then(u => {

@@ -15,7 +15,14 @@ const UserSchema = new Schema({
       type: String,
       trim: true
     }
-  }
+  },
+  role: {
+    type: String,
+    enum: ['Member', 'Admin'],
+    default: 'Member'
+  },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date }
 }, { timestamps: true });
 
 // pre save
