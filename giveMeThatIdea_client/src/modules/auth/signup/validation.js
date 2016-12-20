@@ -24,7 +24,6 @@ export const signupValidation = values => {
 export const signupAsyncValidate = values => {
   return axios.post('/auth/asyncemail', { email: values.email })
     .then(res => {
-      console.log({ res });
       if (res.data.exist) {
         throw { email: res.data.message };
       }
