@@ -1,31 +1,16 @@
 import { isEmail } from 'validator';
-import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import User from './model';
-import serverConfig from '../../config/serverConfig';
-
-const { JWT_SECRET } = serverConfig;
+import { setUserInfo, generateToken, emailHelpers } from '../../helpers';
 
 /*
-* GENERATE A TOKEN
+* ASYNC EMAIL
 */
-const generateToken = user => jwt.sign({
-  sub: user.id },
-  JWT_SECRET,
-  { expiresIn: '1h' }
-);
-
-/*
-* SET WHICH USER INFO WANT
-*/
-const setUserInfo = user => ({
-  email: user.local.email,
-  id: user._id
-});
-
 export const asyncEmail = (req, res) => {
   const { email } = req.body;
   User.findOne({ 'local.email': email })
     .then(user => {
+      // if user we send object { exist: true } who is use in the front end
       if (user) {
         return res.json({ message: 'Email taken!', exist: true });
       }
@@ -61,7 +46,6 @@ export const signup = (req, res) => {
 
   User.findOne({ 'local.email': email })
     .then(auth => {
-      console.log({ auth });
       if (auth) { return res.status(422).json({ success: false, message: 'Email already used!' }); }
 
       const newUser = new User({ local: { email, password } });
@@ -86,32 +70,79 @@ export const signup = (req, res) => {
     });
 };
 
-export const checkToken = (req, res) => {
-  const { token } = req.body;
+/*
+* FORGOT PASSWORD
+*/
+export const forgotPassword = (req, res, next) => {
+  const { email } = req.body;
 
-  if (!token) {
-    return res.status(401).json({ success: false, message: 'Must pass token' });
+  User.findOne({ 'local.email': email })
+    .then(user => {
+      if (!user) { return res.status(422).json({ success: false, message: 'This email not exist try again!' }); }
+
+      crypto.randomBytes(48, (err, buffer) => {
+        if (err) { return res.status(400).json({ success: false, message: 'Something wrong happen', error: err }); }
+
+        const resetToken = buffer.toString('hex');
+
+        user.resetPasswordToken = resetToken; // eslint-disable-line
+        user.resetPasswordExpires = Date.now() + (60000 * 60); // eslint-disable-line
+
+        user.save()
+          .then(u => {
+            emailHelpers(u, 'GiveMeThatIdea - Forgot Password', null, resetToken, err => { // eslint-disable-line
+              if (err) { return console.log(err); }
+              return res.status(201).json({ success: true, message: 'Message on the way!' });
+            });
+          })
+          .catch(err => console.log(err)); // eslint-disable-line
+      });
+    })
+    .catch(error => res.status(400).json({ success: false, message: 'Something wrong happen', error }));
+};
+
+/*
+* RESET PASSWORD
+*/
+export const resetPassword = (req, res) => {
+  const { resetToken } = req.params;
+  const { password } = req.body;
+  if (!resetToken) {
+    return res.status(404).json({ success: false, message: 'Not supposed to be there' });
   }
 
-  jwt.verify(token.replace(/^JWT\s/, ''), JWT_SECRET, (err, decoded) => {
-    if (err) {
-      if (err.name === 'TokenExpiredError') {
-        return res.status(422).json({
-          success: false,
-          expireTime: true,
-          message: 'Token expires plz log again, this is for your security!'
-        });
+  User.findOne({ resetPasswordToken: resetToken, resetPasswordExpires: { $gt: Date.now() } })
+    .then(user => {
+      if (!user) {
+        return res.status(422).json({ success: false, message: 'ERROR ' });
       }
-      return res.status(422).json({ success: false, message: 'Token problem' });
-    }
 
-    User.findById(decoded.sub)
-      .then(user => res.status(201).json({
-        success: true,
-        message: 'Token refresh!',
-        token: `JWT ${generateToken(user)}`,
-        user: setUserInfo(user)
-      }))
-      .catch(error => res.status(401).json({ success: false, message: 'Something wrong happen with the token!', error }));
-  });
+      return res.status(200).json({ success: true, message: 'Work' });
+    });
+};
+
+export const changePassword = (req, res) => {
+  const { password } = req.body;
+  const { resetToken } = req.params;
+
+  User.findOne({ resetPasswordToken: resetToken, resetPasswordExpires: { $gt: Date.now() } })
+    .then(user => {
+      if (!user) {
+        return res.status(422).json({ success: false, message: 'ERROR ' });
+      }
+
+      user.resetPasswordToken = undefined; // eslint-disable-line
+      user.resetPasswordExpires = undefined; // eslint-disable-line
+
+      user.password = password; // eslint-disable-line
+
+      user.save()
+        .then(u => {
+          emailHelpers(u, 'GiveMeThatIdea - New Password', null, null, err => { // eslint-disable-line
+            if (err) { return console.log(err); }
+            return res.status(201).json({ success: true, message: 'Message on the way!' });
+          });
+        })
+        .catch(err => console.log(err));
+    });
 };
