@@ -9,7 +9,8 @@ import { Confirm } from 'semantic-ui-react';
 /**
 * AXIOS DEFAULTS SETUP
 */
-axios.defaults.baseURL = 'http://localhost:3001/api/v1';
+axios.defaults.baseURL = process.env.NODE_ENV !== 'production' ?
+  'http://localhost:3001/api/v1' : 'https://givemethatidea.now.sh/api/v1';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 class App extends Component {
