@@ -52,9 +52,13 @@ export const loginUser = values => dispatch => {
 
 export const signupUser = values => dispatch => {
   dispatch({ type: SIGNUP_USER });
-  const { email, password } = values;
+  const { email, password, username } = values;
 
-  return axios.post('/auth/signup', { email, password })
+  if (!email || !password || !username) {
+    return;
+  }
+
+  return axios.post('/auth/signup', { email, password, username })
     .then(res => {
       dispatch({
         type: SIGNUP_USER_SUCCESS,
