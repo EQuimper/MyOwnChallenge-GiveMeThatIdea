@@ -28,6 +28,7 @@ const UserSchema = new Schema({
     default: 'Member'
   },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+  ideasFollow: [{ type: Schema.Types.ObjectId, ref: 'Idea' }],
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date }
 }, { timestamps: true });
