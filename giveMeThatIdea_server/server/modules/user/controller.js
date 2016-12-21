@@ -20,6 +20,22 @@ export const asyncEmail = (req, res) => {
 };
 
 /*
+* ASYNC USERNAME
+*/
+export const asyncUsername = (req, res) => {
+  const { username } = req.body;
+  User.findOne({ username })
+    .then(user => {
+      // if user we send object { exist: true } who is use in the front end
+      if (user) {
+        return res.json({ message: 'Username taken!', exist: true });
+      }
+      return res.json({ message: 'Username available', exist: false });
+    })
+    .catch(err => res.json({ err }));
+};
+
+/*
 * LOGIN
 */
 export const login = (req, res, next) => {
@@ -32,12 +48,14 @@ export const login = (req, res, next) => {
 * SIGNUP
 */
 export const signup = (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
 
   if (!email) {
     return res.status(422).json({ success: false, message: 'Email is required!' });
   } else if (!password) {
     return res.status(422).json({ success: false, message: 'Password is required!' });
+  } else if (!username) {
+    return res.status(422).json({ success: false, message: 'Username is required!' });
   }
 
   if (!isEmail(email)) {
@@ -48,7 +66,7 @@ export const signup = (req, res) => {
     .then(auth => {
       if (auth) { return res.status(422).json({ success: false, message: 'Email already used!' }); }
 
-      const newUser = new User({ local: { email, password } });
+      const newUser = new User({ local: { email, password }, username });
 
       newUser.save()
         .then(user => res.status(201).json({
@@ -73,7 +91,7 @@ export const signup = (req, res) => {
 /*
 * FORGOT PASSWORD
 */
-export const forgotPassword = (req, res, next) => {
+export const forgotPassword = (req, res) => {
   const { email } = req.body;
 
   User.findOne({ 'local.email': email })
