@@ -4,5 +4,6 @@
 */
 export const setUserInfo = user => ({
   email: user.local.email,
-  id: user._id
+  id: user._id,
+  username: user.username
 });
