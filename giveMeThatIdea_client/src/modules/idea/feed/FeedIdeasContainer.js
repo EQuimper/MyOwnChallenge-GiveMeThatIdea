@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FeedIdeas from './FeedIdeas';
-import { fetchAllIdeas, followIdea } from './actions';
+import { fetchAllIdeas, followIdea, unfollowIdea } from './actions';
 
 class FeedIdeasContainer extends Component {
   componentWillMount () {
@@ -9,11 +9,16 @@ class FeedIdeasContainer extends Component {
   }
 
   render() {
-    const { data, ideasFollow, followIdea } = this.props;
+    const { data, ideasFollow, followIdea, unfollowIdea } = this.props;
     if (!data.isFetched) {
       return <h1>Loading...</h1>;
     } else if (!data.error) {
-      return <FeedIdeas followIdea={followIdea} ideas={data.ideas} ideasFollow={ideasFollow} />;
+      return <FeedIdeas
+        followIdea={followIdea}
+        ideas={data.ideas}
+        ideasFollow={ideasFollow}
+        unfollowIdea={unfollowIdea}
+      />;
     }
     return <h1>Error</h1>;
   }
@@ -24,5 +29,5 @@ export default connect(
     data: state.api.ideas,
     ideasFollow: state.ui.ideasFollow
   }),
-  { fetchAllIdeas, followIdea }
+  { fetchAllIdeas, followIdea, unfollowIdea }
 )(FeedIdeasContainer);
