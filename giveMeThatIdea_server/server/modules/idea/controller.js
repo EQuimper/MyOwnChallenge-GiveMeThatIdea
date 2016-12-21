@@ -160,7 +160,10 @@ export const followIdea = (req, res) => {
   const { userId } = req.body;
 
   const ideaPromise = new Promise((resolve, reject) => {
-    return Idea.findById(req.params.id)
+    return Idea
+      .findByIdAndUpdate(req.params.id, {
+        $push: { usersFollow: userId }
+      })
       .then(
         idea => resolve(idea),
         error => reject(error)
@@ -168,7 +171,10 @@ export const followIdea = (req, res) => {
   });
 
   const userPromise = new Promise((resolve, reject) => {
-    return User.findById(userId)
+    return User
+      .findByIdAndUpdate(userId, {
+        $push: { ideasFollow: req.params.id }
+      })
       .then(
         user => resolve(user),
         error => reject(error)
@@ -177,23 +183,7 @@ export const followIdea = (req, res) => {
 
   const promiseAll = Promise.all([ideaPromise, userPromise])
     .then(
-      values => {
-        const idea = values[0];
-        const user = values[1];
-        idea.usersFollow.push(user);
-        return idea.save()
-          .then(
-            () => {
-              user.ideasFollow.push(idea);
-              return user.save()
-                .then(
-                  () => res.status(201).json({ success: true, message: 'Idea followed!' }),
-                  error => res.status(422).json({ success: false, error })
-                );
-            },
-            error => res.status(422).json({ success: false, error })
-          );
-      },
+      () => res.status(201).json({ success: true, message: 'Idea followed!' }),
       error => res.status(422).json({ success: false, error })
     );
 
@@ -204,9 +194,9 @@ export const unfollowIdea = (req, res) => {
   const { userId } = req.body;
   const ideaPromise = new Promise((resolve, reject) => {
     return Idea
-      .update({ _id: req.params.id }, {
+      .findByIdAndUpdate(req.params.id, {
         $pull: { usersFollow: userId }
-      }, { safe: true })
+      })
       .then(
         idea => resolve(idea),
         error => reject(error)
@@ -215,9 +205,9 @@ export const unfollowIdea = (req, res) => {
 
   const userPromise = new Promise((resolve, reject) => {
     return User
-      .update({ _id: userId }, {
+      .findByIdAndUpdate(userId, {
         $pull: { ideasFollow: req.params.id },
-      }, { safe: true })
+      })
       .then(
         user => resolve(user),
         error => reject(error)
