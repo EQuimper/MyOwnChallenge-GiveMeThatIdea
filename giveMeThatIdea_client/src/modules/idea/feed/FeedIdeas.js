@@ -17,7 +17,17 @@ const changeColor = name => {
   }
 };
 
-const FeedIdeas = ({ ideas, ideasFollow, followIdea }) => (
+const getLength = (arr, id) => {
+  const idea = arr.reduce((acc, o) => {
+    if (o.id === id) {
+      acc = o
+    }
+    return acc;
+  }, {});
+  return idea.followers;
+};
+
+const FeedIdeas = ({ ideas, ideasFollow, followIdea, unfollowIdea }) => (
   <Grid centered columns={1}>
     <Grid.Column>
       <Card.Group>
@@ -35,7 +45,7 @@ const FeedIdeas = ({ ideas, ideasFollow, followIdea }) => (
               <br />
               <Card.Meta>
                 <FollowCommentsMeta
-                  followers={idea.usersFollow.length}
+                  followers={getLength(ideasFollow.lengthFollow, idea._id)}
                   comments={idea.comments.length}
                 />
               </Card.Meta>
@@ -50,13 +60,22 @@ const FeedIdeas = ({ ideas, ideasFollow, followIdea }) => (
             </Card.Content>
             <Card.Content extra>
               <div className="ui two buttons">
-                <Button
-                  basic={!checkIfFollow(ideasFollow, idea._id)}
-                  color="blue"
-                  onClick={() => followIdea(idea._id)}
-                >
-                  Follow
-                </Button>
+                {checkIfFollow(ideasFollow.ideas, idea._id) ? (
+                  <Button
+                    color="blue"
+                    onClick={() => unfollowIdea(idea._id)}
+                  >
+                    Unfollow
+                  </Button>
+                ) : (
+                  <Button
+                    basic
+                    color="blue"
+                    onClick={() => followIdea(idea._id)}
+                  >
+                    Follow
+                  </Button>
+                )}
                 <Button
                   basic
                   color="black"
