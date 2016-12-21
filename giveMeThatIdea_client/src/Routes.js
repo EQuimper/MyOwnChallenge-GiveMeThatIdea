@@ -11,7 +11,8 @@ import {
   ResetPasswordContainer,
   ForgotPasswordContainer,
   FeedIdeasContainer,
-  IdeaPageContainer
+  IdeaPageContainer,
+  Page404
 } from './modules';
 
 const UserIsAuthenticated = UserAuthWrapper({
@@ -47,5 +48,6 @@ export default () => (
         </Route>
       </Route>
     </Route>
+    <Route path="*" component={Page404} />
   </Router>
 );
