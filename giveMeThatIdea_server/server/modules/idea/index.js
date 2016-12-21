@@ -1,3 +1,4 @@
 import ideaRoutes from './routes';
+import Idea from './model';
 
-export { ideaRoutes };
+export { ideaRoutes, Idea };
