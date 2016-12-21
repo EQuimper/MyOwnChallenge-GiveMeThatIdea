@@ -30,6 +30,7 @@ const IdeaSchema = new Schema({
     unique: true,
     lowercase: true
   },
+  usersFollow: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 }, { timestamps: true });
 
