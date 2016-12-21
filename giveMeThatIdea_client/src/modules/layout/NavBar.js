@@ -1,11 +1,12 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import { Menu, Container } from 'semantic-ui-react'
+import { Menu, Container, Icon } from 'semantic-ui-react'
 
 const NavBar = ({ path, auth, toggleLogout }) => (
   <Menu pointing secondary>
     <Container>
       <Menu.Item onClick={() => browserHistory.push(auth ? '/ideas' : '/')}>
+        <Icon name="idea" color="black" disabled size="large" />
         GetMeThatIdea
       </Menu.Item>
       {!auth ? (
