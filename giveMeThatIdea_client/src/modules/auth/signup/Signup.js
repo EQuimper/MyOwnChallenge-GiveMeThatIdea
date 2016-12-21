@@ -23,6 +23,16 @@ const Signup = ({ handleSubmit, signupUser, valid }) => (
           />
           <Form className="attached fluid segment" onSubmit={handleSubmit(signupUser)}>
             <Form.Field>
+              <label>Username</label>
+              <Field
+                icon="user"
+                component={InputField}
+                placeholder="yourAwesomeUsername"
+                name="username"
+                type="text"
+              />
+            </Form.Field>
+            <Form.Field>
               <label>Email</label>
               <Field
                 icon="mail"
@@ -75,6 +85,6 @@ export default reduxForm({
   form: 'signup',
   validate: signupValidation,
   asyncValidate: signupAsyncValidate,
-  asyncBlurFields: ['email']
+  asyncBlurFields: ['username']
 })(Signup);
 
