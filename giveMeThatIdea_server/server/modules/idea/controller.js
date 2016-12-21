@@ -180,9 +180,7 @@ export const followIdea = (req, res) => {
       values => {
         const idea = values[0];
         const user = values[1];
-        console.log({ idea, user });
         idea.usersFollow.push(user);
-        // console.log("hello world");
         return idea.save()
           .then(
             () => {
@@ -203,5 +201,34 @@ export const followIdea = (req, res) => {
 };
 
 export const unfollowIdea = (req, res) => {
+  const { userId } = req.body;
+  const ideaPromise = new Promise((resolve, reject) => {
+    return Idea
+      .update({ _id: req.params.id }, {
+        $pull: { usersFollow: userId }
+      }, { safe: true })
+      .then(
+        idea => resolve(idea),
+        error => reject(error)
+      );
+  });
 
+  const userPromise = new Promise((resolve, reject) => {
+    return User
+      .update({ _id: userId }, {
+        $pull: { ideasFollow: req.params.id },
+      }, { safe: true })
+      .then(
+        user => resolve(user),
+        error => reject(error)
+      );
+  });
+
+  const promiseAll = Promise.all([ideaPromise, userPromise])
+    .then(
+      () => res.status(200).json({ success: true, message: 'Idea unfollow' }),
+      error => res.status(422).json({ success: false, error })
+    );
+
+  return promiseAll;
 };
