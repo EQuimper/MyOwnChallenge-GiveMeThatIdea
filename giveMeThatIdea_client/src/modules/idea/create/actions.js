@@ -5,18 +5,27 @@ import { browserHistory } from 'react-router';
 export const CREATE_IDEA = 'CREATE_IDEA';
 
 export const createIdea = values => (dispatch, getState) => {
-  dispatch({ type: CREATE_IDEA });
   const { title, description, category } = values;
-  const userId = getState().auth.user.id;
-  axios.post('/ideas/new', { title, description, category, userId })
-    .then(
-      res => {
-        toastr.success('Successfully created');
-        browserHistory.push('/ideas');
-      },
-      err => {
-        toastr.error('Something Wrong Happen!', 'Try again!');
-        browserHistory.push('/ideas/new');
-      }
-    );
+
+  const promise = new Promise((resolve, reject) => {
+    return axios.post('/ideas/new', { title, description, category })
+      .then(
+        res => resolve(res.data),
+        error => reject(error)
+      );
+  });
+
+  return dispatch({
+    type: CREATE_IDEA,
+    payload: promise
+  }).then(
+    ({ value }) => {
+      toastr.success(value.message);
+      return browserHistory.push('/ideas');
+    },
+    error => {
+      toastr.error('Something Wrong Happen!', error.response.data.message);
+      return browserHistory.push('/ideas/new');
+    }
+  );
 }
