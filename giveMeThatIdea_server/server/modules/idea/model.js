@@ -29,8 +29,9 @@ const IdeaSchema = new Schema({
     trim: true,
     unique: true,
     lowercase: true
-  }
-});
+  },
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
+}, { timestamps: true });
 
 IdeaSchema.pre('save', function(next) {
   this.slug = slugifyText(this.title);
