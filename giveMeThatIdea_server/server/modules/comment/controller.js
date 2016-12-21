@@ -10,7 +10,12 @@ const setCommentInfo = comment => ({
 });
 
 export const createComment = (req, res) => {
-  const { text, userId } = req.body;
+  const { text } = req.body;
+  const userId = req.user._id;
+
+  if (!text || !userId) {
+    return res.status(422).json({ success: false, message: 'Need title and author!' });
+  }
 
   const ideaPromise = new Promise((resolve, reject) => {
     return Idea.findById(req.params.id)

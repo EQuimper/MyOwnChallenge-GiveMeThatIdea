@@ -15,7 +15,8 @@ export const asyncIdeaTitle = (req, res) => {
 };
 
 export const createIdea = (req, res) => {
-  const { title, description, category, userId } = req.body;
+  const { title, description, category } = req.body;
+  const userId = req.user._id;
 
   if (!title) {
     return res.status(422).json({ success: false, message: 'A title is required!' });
@@ -51,7 +52,7 @@ export const createIdea = (req, res) => {
 
 export const deleteIdea = (req, res) => {
   const { id } = req.params;
-  const { userId } = req.body;
+  const userId = req.user._id;
 
   Idea.findById(id)
     .then(idea => {
@@ -71,10 +72,10 @@ export const deleteIdea = (req, res) => {
 
 export const updateIdea = (req, res) => {
   const { id } = req.params;
-  const { userId, authorId } = req.body;
+  const { authorId } = req.body;
   const uIdea = req.body;
+  const userId = req.user._id;
 
-  delete uIdea.userId;
   delete uIdea.authorId;
 
   if (!userId) {
@@ -99,8 +100,6 @@ const unselectCategory = '-__v';
 const unselectComment = '-__v -idea';
 
 export const getAllIdea = (req, res) => {
-  const { userId } = req.body;
-
   const getIdFromIdea = arr => arr.map(i => i._id);
 
   const ideaPromise = new Promise((resolve, reject) => {
@@ -116,7 +115,7 @@ export const getAllIdea = (req, res) => {
   });
 
   const ideasFollowedByUser = new Promise((resolve, reject) => {
-    Idea.find({ usersFollow: userId })
+    Idea.find({ usersFollow: req.user._id })
       .then(
         ideasFollow => resolve(ideasFollow),
         error => reject(error)
@@ -151,18 +150,21 @@ export const getOneIdea = (req, res) => {
       }
     })
     .then(
-      idea => res.status(200).json({ success: true, idea }),
+      idea => {
+        if (!idea) {
+          res.status(422).json({ success: false, message: 'Idea not exist!' });
+        }
+        return res.status(200).json({ success: true, idea });
+      },
       error => res.status(422).json({ success: false, error })
     );
 };
 
 export const followIdea = (req, res) => {
-  const { userId } = req.body;
-
   const ideaPromise = new Promise((resolve, reject) => {
     return Idea
       .findByIdAndUpdate(req.params.id, {
-        $push: { usersFollow: userId }
+        $push: { usersFollow: req.user._id }
       })
       .then(
         idea => resolve(idea),
@@ -172,7 +174,7 @@ export const followIdea = (req, res) => {
 
   const userPromise = new Promise((resolve, reject) => {
     return User
-      .findByIdAndUpdate(userId, {
+      .findByIdAndUpdate(req.user._id, {
         $push: { ideasFollow: req.params.id }
       })
       .then(
@@ -191,11 +193,10 @@ export const followIdea = (req, res) => {
 };
 
 export const unfollowIdea = (req, res) => {
-  const { userId } = req.body;
   const ideaPromise = new Promise((resolve, reject) => {
     return Idea
       .findByIdAndUpdate(req.params.id, {
-        $pull: { usersFollow: userId }
+        $pull: { usersFollow: req.user._id }
       })
       .then(
         idea => resolve(idea),
@@ -205,7 +206,7 @@ export const unfollowIdea = (req, res) => {
 
   const userPromise = new Promise((resolve, reject) => {
     return User
-      .findByIdAndUpdate(userId, {
+      .findByIdAndUpdate(req.user._id, {
         $pull: { ideasFollow: req.params.id },
       })
       .then(
@@ -221,4 +222,8 @@ export const unfollowIdea = (req, res) => {
     );
 
   return promiseAll;
+};
+
+export const getAllFollowIdea = (req, res) => {
+  // const { userId } = req.
 };
