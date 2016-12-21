@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Card, Container, Button, Icon, Segment, Label } from 'semantic-ui-react';
 import { browserHistory } from 'react-router';
 import { truncateString } from '../../../helpers/truncateString';
+import { LikesGroup, FollowCommentsMeta } from './components';
 
 const FeedIdeas = ({ ideas }) => (
   <Grid centered columns={1}>
@@ -9,23 +10,27 @@ const FeedIdeas = ({ ideas }) => (
       <Card.Group>
         {ideas.map((idea, i) => (
           <Card key={i}>
-            <Label attached="top">{idea.category.name}</Label>
-            <Card.Content label={{ as: 'a', corner: 'left', icon: 'heart' }}>
+            <Label attached="top">
+              <Icon name="idea" color="black" disabled size="large" />
+              {idea.category.name}
+            </Label>
+            <Card.Content>
+              <br />
               <Card.Header>
                 {truncateString(idea.title, 25)}
               </Card.Header>
+              <br />
               <Card.Meta>
-                10 followers | 10 comments
+                <FollowCommentsMeta followers={2} comments={idea.comments.length} />
               </Card.Meta>
+              <br />
               <Card.Description>
                 {truncateString(idea.description, 150)}
               </Card.Description>
+              <br />
             </Card.Content>
             <Card.Content extra>
-              <div className='ui two buttons'>
-                <Button basic color="green">10 Liked</Button>
-                <Button basic color="red">2 Disliked</Button>
-              </div>
+              <LikesGroup liked={10} disliked={5} />
             </Card.Content>
             <Card.Content extra>
               <div className='ui two buttons'>
