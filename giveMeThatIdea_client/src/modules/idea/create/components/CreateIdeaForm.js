@@ -5,9 +5,10 @@ import { InputField, TextAreaField, SelectField } from '../../../../commons';
 import { createIdeaValidation, ideaTitleAsyncValidate } from './validation';
 
 const optionsMap = arr => {
-  const nArr = [];
-  arr.map(i => nArr.push({ text: i.name, value: i._id }));
-  return nArr;
+  return arr.reduce((acc, value) => {
+    acc.push({ text: value.name, value: value._id });
+    return acc;
+  }, []);
 };
 
 const CreateIdeaForm = ({ valid, categories, handleSubmit, createIdea }) => (
