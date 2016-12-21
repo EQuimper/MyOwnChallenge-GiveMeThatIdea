@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Button, Form, Grid, Message, Icon } from 'semantic-ui-react';
+import { Button, Form, Grid } from 'semantic-ui-react';
 import { InputField } from '../../../commons';
 import { forgotPasswordValidation, forgotPasswordAsyncValidate } from './validation';
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
-import { Button, Checkbox, Form, Grid, Message, Icon } from 'semantic-ui-react';
+import { Button, Form, Grid, Message, Icon } from 'semantic-ui-react';
 import { InputField } from '../../../commons';
 import { signupValidation, signupAsyncValidate } from './validation';
 

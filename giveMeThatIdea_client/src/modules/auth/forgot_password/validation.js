@@ -16,7 +16,8 @@ export const forgotPasswordAsyncValidate = values => {
   return axios.post('/auth/asyncemail', { email: values.email })
     .then(res => {
       if (!res.data.exist) {
-        throw { email: 'Email not exist are you sure this is your?' };
+        const errorMessage = { email: 'Email not exist are you sure this is your?' };
+        throw errorMessage;
       }
     });
 }

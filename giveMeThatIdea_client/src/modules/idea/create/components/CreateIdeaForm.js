@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Form, Grid } from 'semantic-ui-react';
+import { Button, Form } from 'semantic-ui-react';
 import { reduxForm, Field } from 'redux-form';
 import { InputField, TextAreaField, SelectField } from '../../../../commons';
 import { createIdeaValidation, ideaTitleAsyncValidate } from './validation';

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { Grid, Form, Button } from 'semantic-ui-react';
 import { InputField } from '../../../commons';

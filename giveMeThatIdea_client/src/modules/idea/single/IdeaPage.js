@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Icon, Image, Item, Label, Divider, Grid, Comment, Form, Header } from 'semantic-ui-react';
+import { Item, Label, Divider, Grid } from 'semantic-ui-react';
 import { CommentsGroup } from './components';
 
-const IdeaPage = ({ idea }) => (
+const IdeaPage = ({ idea, createComment, comments }) => (
   <Grid columns={2}>
     <Grid.Row>
       <Grid.Column width="10">
@@ -22,7 +22,9 @@ const IdeaPage = ({ idea }) => (
         </Item>
       </Grid.Column>
       <Grid.Column width="6">
-        <CommentsGroup comments={idea.comments} />
+        {!comments.isFetched ? <h1>Loading...</h1> : (
+          <CommentsGroup createComment={createComment} comments={comments.comments} />
+        )}
       </Grid.Column>
     </Grid.Row>
   </Grid>

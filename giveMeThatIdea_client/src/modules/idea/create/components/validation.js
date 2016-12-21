@@ -1,6 +1,5 @@
 import axios from 'axios';
-import toastr from 'react-redux-toastr';
-import { unauthUser } from '../../../auth/actions';
+import { toastr } from 'react-redux-toastr';
 
 export const createIdeaValidation = values => {
   const errors = {};
@@ -29,7 +28,8 @@ export const ideaTitleAsyncValidate = values => {
     .then(
       res => {
         if (res.data.exist) {
-          throw { title: res.data.message };
+          const errorMessage = { title: res.data.message };
+          throw errorMessage;
         }
       },
       err => {

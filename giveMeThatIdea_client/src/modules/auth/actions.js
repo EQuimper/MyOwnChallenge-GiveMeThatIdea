@@ -2,7 +2,6 @@ import axios from 'axios';
 import { browserHistory } from 'react-router';
 import { toastr } from 'react-redux-toastr';
 import { toggleLogout } from '../index';
-// import { instance } from '../../App';
 
 export const UNAUTH_USER = 'UNAUTH_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
@@ -32,8 +31,6 @@ export const loginUser = values => dispatch => {
         message: res.data.message
       });
       axios.defaults.headers.common['Authorization'] = res.data.token;
-      console.group('HEaders');
-      console.log(axios.defaults);
       toastr.success('Successfully Login!', 'Welcome Back!');
       return browserHistory.push('/ideas');
     })
@@ -90,7 +87,7 @@ export const checkToken = () => (dispatch, getState) => {
     }))
     .catch(err => {
       const { expireTime, message } = err.response.data;
-      if (err.response.data.expireTime) {
+      if (expireTime) {
         toastr.error('You need to authenticate again', message);
       }
       return dispatch({ type: CHECK_TOKEN_ERROR })

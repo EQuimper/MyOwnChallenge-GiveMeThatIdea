@@ -31,7 +31,8 @@ export const signupAsyncValidate = values => {
   return axios.post('/auth/asyncUsername', { username: values.username })
     .then(res => {
       if (res.data.exist) {
-        throw { username: res.data.message };
+        const errorMessage = { username: res.data.message };
+        throw errorMessage;
       }
     });
 }

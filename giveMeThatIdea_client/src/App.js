@@ -47,7 +47,8 @@ class App extends Component {
               <Grid.Column width={2}>
                 <SideMenu path={location.pathname} />
               </Grid.Column>
-              <Grid.Column width={14}>
+              <Grid.Column width={1} />
+              <Grid.Column width={13}>
                 <Container>
                   {children}
                 </Container>

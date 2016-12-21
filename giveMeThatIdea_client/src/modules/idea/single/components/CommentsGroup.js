@@ -1,21 +1,19 @@
 import React from 'react';
-import { Comment, Form, Header, Button, Menu, Label, Icon, Divider } from 'semantic-ui-react';
+import { Comment, Header, Label, Divider } from 'semantic-ui-react';
 import CommentComponent from './CommentComponent';
 import CreateComment from './CreateComment';
 
 const styles = {
   commentGroup: {
-    maxHeight: '40vh',
+    maxHeight: '45vh',
     overflowY: 'scroll'
   },
   headerEl: {
     margin: '0 2%'
   }
-}
+};
 
-
-
-const CommentsGroup = ({ comments }) => (
+const CommentsGroup = ({ comments, createComment }) => (
   <Comment.Group>
     <Header as='h3' dividing>
       <span style={styles.headerEl}>
@@ -32,16 +30,19 @@ const CommentsGroup = ({ comments }) => (
     {comments.length > 0 ? (
       <div style={styles.commentGroup}>
         {comments.map((comment, i) => (
-          <CommentComponent
-            key={i}
-            text={comment.text}
-            author="Username"
-            dateCreated={comment.createdAt}
-          />
+          <div>
+            <CommentComponent
+              key={i}
+              text={comment.text}
+              author="Username"
+              dateCreated={comment.createdAt}
+            />
+            <Divider />
+          </div>
         ))}
       </div>
     ) : <h5>No comments yet!</h5>}
-    <CreateComment />
+    <CreateComment createComment={createComment} />
   </Comment.Group>
 );
 
