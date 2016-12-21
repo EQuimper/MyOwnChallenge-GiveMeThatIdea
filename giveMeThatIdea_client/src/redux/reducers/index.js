@@ -2,15 +2,24 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import {reducer as toastrReducer} from 'react-redux-toastr';
 import { reducer as formReducer } from 'redux-form';
-import { AuthReducer, IdeasReducer, IdeaReducer, ModalReducer } from '../../modules';
+import {
+  AuthReducer,
+  IdeasReducer,
+  IdeaReducer,
+  ModalReducer,
+  CommentReducer,
+  IdeasFollowReducer
+} from '../../modules';
 
 const apiReducer = combineReducers({
   ideas: IdeasReducer,
-  idea: IdeaReducer
+  idea: IdeaReducer,
 });
 
 const uiReducer = combineReducers({
-  modal: ModalReducer
+  modal: ModalReducer,
+  comments: CommentReducer,
+  ideasFollow: IdeasFollowReducer
 });
 
 export default combineReducers({
