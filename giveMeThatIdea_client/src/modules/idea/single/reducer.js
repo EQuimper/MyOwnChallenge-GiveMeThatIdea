@@ -15,7 +15,7 @@ export default (state = INITIAL_STATE, action) => {
         idea: action.payload,
         isFetched: true
       };
-    case `${FETCH_IDEA}_PENDING`:
+    case `${FETCH_IDEA}_REJECTED`:
       return { ...state,
         error: action.payload,
         isFetched: true

@@ -13,9 +13,9 @@ export default (state = INITIAL_STATE, action) => {
     case `${FETCH_ALL_IDEAS}_FULFILLED`:
       return { ...state,
         isFetched: true,
-        ideas: action.payload
+        ideas: action.payload.ideas
       };
-    case `${FETCH_ALL_IDEAS}_PENDING`:
+    case `${FETCH_ALL_IDEAS}_REJECTED`:
       return { ...state,
         isFetched: true,
         error: action.payload
