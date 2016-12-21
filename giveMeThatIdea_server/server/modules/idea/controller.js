@@ -1,5 +1,6 @@
 import Idea from './model';
 import { Category } from '../category';
+import { User } from '../user';
 
 export const asyncIdeaTitle = (req, res) => {
   const { title } = req.body;
@@ -98,15 +99,42 @@ const unselectCategory = '-__v';
 const unselectComment = '-__v -idea';
 
 export const getAllIdea = (req, res) => {
-  Idea
-    .find({})
-    .sort({ createdAt: -1 })
-    .populate('author', unselectAuthor)
-    .populate('category', unselectCategory)
-    .then(ideas => res.status(200).json({ success: true, ideas }))
-    .catch(error => res.status(400).json({ success: false, error }));
-};
+  const { userId } = req.body;
 
+  const getIdFromIdea = arr => arr.map(i => i._id);
+
+  const ideaPromise = new Promise((resolve, reject) => {
+    Idea
+      .find({})
+      .sort({ createdAt: -1 })
+      .populate('author', unselectAuthor)
+      .populate('category', unselectCategory)
+      .then(
+        ideas => resolve(ideas),
+        error => reject(error)
+      );
+  });
+
+  const ideasFollowedByUser = new Promise((resolve, reject) => {
+    Idea.find({ usersFollow: userId })
+      .then(
+        ideasFollow => resolve(ideasFollow),
+        error => reject(error)
+      );
+  });
+
+  const promiseAll = Promise.all([ideaPromise, ideasFollowedByUser])
+    .then(
+      values => {
+        const ideas = values[0];
+        const ideasFollow = values[1];
+        return res.status(200).json({ success: true, ideas, ideasFollow: getIdFromIdea(ideasFollow) });
+      },
+      error => res.status(422).json({ success: false, error })
+    );
+
+  return promiseAll;
+};
 
 export const getOneIdea = (req, res) => {
   Idea.findOne({ slug: req.params.slug })
@@ -115,6 +143,7 @@ export const getOneIdea = (req, res) => {
     .populate({
       path: 'comments',
       select: unselectComment,
+      options: { sort: { createdAt: -1 } },
       populate: {
         path: 'author',
         model: 'User',
@@ -125,4 +154,54 @@ export const getOneIdea = (req, res) => {
       idea => res.status(200).json({ success: true, idea }),
       error => res.status(422).json({ success: false, error })
     );
+};
+
+export const followIdea = (req, res) => {
+  const { userId } = req.body;
+
+  const ideaPromise = new Promise((resolve, reject) => {
+    return Idea.findById(req.params.id)
+      .then(
+        idea => resolve(idea),
+        error => reject(error)
+      );
+  });
+
+  const userPromise = new Promise((resolve, reject) => {
+    return User.findById(userId)
+      .then(
+        user => resolve(user),
+        error => reject(error)
+      );
+  });
+
+  const promiseAll = Promise.all([ideaPromise, userPromise])
+    .then(
+      values => {
+        const idea = values[0];
+        const user = values[1];
+        console.log({ idea, user });
+        idea.usersFollow.push(user);
+        // console.log("hello world");
+        return idea.save()
+          .then(
+            () => {
+              user.ideasFollow.push(idea);
+              return user.save()
+                .then(
+                  () => res.status(201).json({ success: true, message: 'Idea followed!' }),
+                  error => res.status(422).json({ success: false, error })
+                );
+            },
+            error => res.status(422).json({ success: false, error })
+          );
+      },
+      error => res.status(422).json({ success: false, error })
+    );
+
+  return promiseAll;
+};
+
+export const unfollowIdea = (req, res) => {
+
 };
