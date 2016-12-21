@@ -10,6 +10,7 @@ routes.route('/ideas/:id').put(requireAuth, IdeaController.updateIdea);
 routes.route('/ideas').post(requireAuth, IdeaController.getAllIdea);
 routes.route('/ideas/:slug').get(requireAuth, IdeaController.getOneIdea);
 routes.route('/ideas/asyncIdeaTitle').post(requireAuth, IdeaController.asyncIdeaTitle);
-routes.route('/ideas/:id/followIdea').post(requireAuth, IdeaController.followIdea);
+routes.route('/ideas/:id/followIdea').put(requireAuth, IdeaController.followIdea);
+routes.route('/ideas/:id/unfollowIdea').put(requireAuth, IdeaController.unfollowIdea);
 
 export default routes;
