@@ -27,6 +27,8 @@
     "eslint-plugin-jsx-a11y": "^2.2.3"
   },
   "scripts": {
-    "start": "nodemon index.js"
+    "dev": "NODE_ENV=development nodemon index.js",
+    "start": "NODE_ENV=production nodemon index.js",
+    "deploy": "now -e MONGO_USERNAME=@mongo_username -e MONGO_PASSWORD=@mongo_password -e POSTMARK=@postmark -e JWT_SECRET=@jwt_secret"
   }
 }

@@ -15,7 +15,7 @@ export const emailHelpers = (user, subject, text, resetToken, cb) => {
       TemplateId: 1166141,
       TemplateModel: {
         name: user.local.email,
-        action_url: `http://localhost:3000/resetPassword/${resetToken}`,
+        action_url: `${serverConfig.CLIENT_ROOT}/resetPassword/${resetToken}`,
         support_url: supportUrl
       }
     };
@@ -26,7 +26,7 @@ export const emailHelpers = (user, subject, text, resetToken, cb) => {
       TemplateId: 1166441,
       TemplateModel: {
         name: user.local.email,
-        action_url: 'http://localhost:3000/login',
+        action_url: `${serverConfig.CLIENT_ROOT}/login`,
         support_url: supportUrl
       }
     };

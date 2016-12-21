@@ -6,7 +6,7 @@ import serverConfig from './config/serverConfig';
 import './config/dbConfig';
 import { userRoutes, ideaRoutes, categoryRoutes, commentRoutes } from './modules';
 
-const { PORT } = serverConfig;
+const { PORT, CLIENT_ROOT } = serverConfig;
 
 const app = express();
 
@@ -14,7 +14,7 @@ const app = express();
 * MIDDLEWARE
 */
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Origin', CLIENT_ROOT);
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials');
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -34,5 +34,5 @@ app.use('/api/v1', [
 
 app.listen(PORT, err => {
   if (err) return console.log(`Error happen: ${err}`); // eslint-disable-line
-  console.log(`Server listen to http://localhost:${PORT}`); // eslint-disable-line
+  console.log(`Server run on ${CLIENT_ROOT}`); // eslint-disable-line
 });
