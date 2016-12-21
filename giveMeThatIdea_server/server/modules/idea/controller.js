@@ -94,7 +94,8 @@ export const updateIdea = (req, res) => {
 };
 
 const unselectAuthor = '-local.password -updatedAt -createdAt -__v -role';
-const unselectCategory = '-__V';
+const unselectCategory = '-__v';
+const unselectComment = '-__v -idea';
 
 export const getAllIdea = (req, res) => {
   Idea
@@ -111,6 +112,15 @@ export const getOneIdea = (req, res) => {
   Idea.findOne({ slug: req.params.slug })
     .populate('author', unselectAuthor)
     .populate('category', unselectCategory)
+    .populate({
+      path: 'comments',
+      select: unselectComment,
+      populate: {
+        path: 'author',
+        model: 'User',
+        select: `${unselectAuthor} -comments`
+      }
+    })
     .then(
       idea => res.status(200).json({ success: true, idea }),
       error => res.status(422).json({ success: false, error })
