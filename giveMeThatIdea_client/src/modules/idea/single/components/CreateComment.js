@@ -4,8 +4,8 @@ import { Form, Button } from 'semantic-ui-react';
 import { TextAreaField } from '../../../../commons';
 import { commentValidation } from './validation';
 
-const CreateComment = ({ valid }) => (
-  <Form reply onSubmit={e => e.preventDefault()}>
+const CreateComment = ({ valid, handleSubmit, createComment }) => (
+  <Form reply onSubmit={handleSubmit(createComment)}>
     <Field
       component={TextAreaField}
       name="text"
