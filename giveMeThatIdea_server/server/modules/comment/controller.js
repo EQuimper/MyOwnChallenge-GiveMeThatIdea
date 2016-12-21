@@ -13,7 +13,7 @@ export const createComment = (req, res) => {
   const { text, userId } = req.body;
 
   const ideaPromise = new Promise((resolve, reject) => {
-    Idea.findById(req.params.ideaId)
+    return Idea.findById(req.params.id)
       .then(
         idea => resolve(idea),
         error => reject(error)
@@ -21,7 +21,7 @@ export const createComment = (req, res) => {
   });
 
   const userPromise = new Promise((resolve, reject) => {
-    User.findById(userId)
+    return User.findById(userId)
       .then(
         user => resolve(user),
         error => reject(error)
