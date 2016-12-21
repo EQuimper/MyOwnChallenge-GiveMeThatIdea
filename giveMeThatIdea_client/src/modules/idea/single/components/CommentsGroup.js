@@ -30,11 +30,11 @@ const CommentsGroup = ({ comments, createComment }) => (
     {comments.length > 0 ? (
       <div style={styles.commentGroup}>
         {comments.map((comment, i) => (
-          <div>
+          <div key={i}>
             <CommentComponent
-              key={i}
+              index={i}
               text={comment.text}
-              author="Username"
+              author={comment.author.username}
               dateCreated={comment.createdAt}
             />
             <Divider />

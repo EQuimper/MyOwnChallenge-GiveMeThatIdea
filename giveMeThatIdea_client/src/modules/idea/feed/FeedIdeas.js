@@ -1,21 +1,10 @@
 import React from 'react';
 import { Grid, Card, Button, Icon, Label } from 'semantic-ui-react';
 import { browserHistory } from 'react-router';
-import { truncateString } from '../../../helpers/truncateString';
+import { truncateString, colorLabel } from '../../../helpers';
 import { LikesGroup, FollowCommentsMeta } from './components';
 
 const checkIfFollow = (arr, id) => arr.includes(id);
-
-const changeColor = name => {
-  switch (name) {
-    case 'Idea for web developer':
-      return 'teal';
-    case 'Idea for web developer portfolio':
-      return 'red';
-    default:
-      return null;
-  }
-};
 
 const getLength = (arr, id) => {
   const idea = arr.reduce((acc, o) => {
@@ -33,7 +22,7 @@ const FeedIdeas = ({ ideas, ideasFollow, followIdea, unfollowIdea }) => (
       <Card.Group>
         {ideas.map((idea, i) => (
           <Card key={i}>
-            <Label attached="top" color={changeColor(idea.category.name)}>
+            <Label attached="top" color={colorLabel(idea.category.name)}>
               <Icon name="idea" color="black" disabled size="large" />
               {idea.category.name}
             </Label>

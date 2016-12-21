@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchIdea, createComment } from './actions';
 import IdeaPage from './IdeaPage';
+import { LoadingScreen } from '../../../commons';
 
 class IdeaPageContainer extends Component {
   componentWillMount() {
@@ -10,7 +11,7 @@ class IdeaPageContainer extends Component {
   render() {
     const { data, createComment, comments } = this.props;
     if (!data.isFetched) {
-      return <h1>Loading...</h1>;
+      return <LoadingScreen />;
     } else if (!data.error) {
       return <IdeaPage idea={data.idea} createComment={createComment} comments={comments} />;
     }

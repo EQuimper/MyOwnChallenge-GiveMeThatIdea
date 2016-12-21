@@ -71,9 +71,7 @@ const Signup = ({ handleSubmit, signupUser, valid }) => (
           <div>
             <h5>You can use this platform for register too.</h5>
             <Button circular color="facebook" icon="facebook" />
-            <Button circular color="twitter" icon="twitter" />
             <Button circular color="black" icon="github" />
-            <Button circular color="google plus" icon="google" />
           </div>
         </Grid.Column>
       </Grid.Row>
@@ -88,3 +86,5 @@ export default reduxForm({
   asyncBlurFields: ['username']
 })(Signup);
 
+            // <Button circular color="twitter" icon="twitter" />
+            // <Button circular color="google plus" icon="google" />

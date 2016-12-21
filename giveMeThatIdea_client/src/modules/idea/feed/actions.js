@@ -13,9 +13,8 @@ const filterLengthFollow = arr =>
   }, []);
 
 export const fetchAllIdeas = ()  => (dispatch, getState) => {
-  const userId = getState().auth.user.id;
   const promise = new Promise((resolve, reject) => {
-    axios.post('/ideas', { userId })
+    axios.get('/ideas')
       .then(
         res => resolve(res.data),
         err => reject(err)
@@ -35,10 +34,8 @@ export const fetchAllIdeas = ()  => (dispatch, getState) => {
 };
 
 export const followIdea = id => (dispatch, getState) => {
-  const userId = getState().auth.user.id;
-
   const promise = new Promise((resolve, reject) => {
-    axios.put(`/ideas/${id}/followIdea`, { userId })
+    axios.put(`/ideas/${id}/followIdea`)
       .then(
         res => resolve(res.data),
         error => reject(error)
@@ -46,7 +43,7 @@ export const followIdea = id => (dispatch, getState) => {
   });
 
   return promise.then(
-    value => dispatch({
+    () => dispatch({
       type: FOLLOW_IDEA,
       id
     }),
@@ -55,10 +52,8 @@ export const followIdea = id => (dispatch, getState) => {
 }
 
 export const unfollowIdea = id => (dispatch, getState) => {
-  const userId = getState().auth.user.id;
-
   const promise = new Promise((resolve, reject) => {
-    axios.put(`/ideas/${id}/unfollowIdea`, { userId })
+    axios.put(`/ideas/${id}/unfollowIdea`)
       .then(
         res => resolve(res.data),
         error => reject(error)
@@ -66,7 +61,7 @@ export const unfollowIdea = id => (dispatch, getState) => {
   });
 
   return promise.then(
-    value => dispatch({
+    () => dispatch({
       type: UNFOLLOW_IDEA,
       id
     }),

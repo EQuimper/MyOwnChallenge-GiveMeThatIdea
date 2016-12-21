@@ -23,7 +23,7 @@ const Login = ({ handleSubmit, loginUser, valid }) => (
         <Grid.Column>
           <Message
             attached
-            header="Welcome to our site!"
+            header="Welcome to our GiveMeThatIdea!"
             content="Fill out the form below for login!"
           />
           <Form className="attached fluid segment" onSubmit={handleSubmit(loginUser)}>
@@ -60,9 +60,7 @@ const Login = ({ handleSubmit, loginUser, valid }) => (
           <div>
             <h5>You can use this platform for login too.</h5>
             <Button circular color="facebook" icon="facebook" />
-            <Button circular color="twitter" icon="twitter" />
             <Button circular color="black" icon="github" />
-            <Button circular color="google plus" icon="google" />
           </div>
         </Grid.Column>
       </Grid.Row>
@@ -74,3 +72,6 @@ export default reduxForm({
   form: 'login',
   validate: loginValidation
 })(Login);
+
+// <Button circular color="twitter" icon="twitter" />
+// <Button circular color="google plus" icon="google" />

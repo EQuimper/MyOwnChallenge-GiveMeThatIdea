@@ -1,6 +1,7 @@
 import React from 'react';
 import { Item, Label, Divider, Grid } from 'semantic-ui-react';
 import { CommentsGroup } from './components';
+import { colorLabel } from '../../../helpers';
 
 const IdeaPage = ({ idea, createComment, comments }) => (
   <Grid columns={2}>
@@ -10,7 +11,7 @@ const IdeaPage = ({ idea, createComment, comments }) => (
           <Item.Content>
             <Item.Header as="h1">{idea.title}</Item.Header>
             <Item.Meta>
-              <Label color="blue">{idea.category.name}</Label>
+              <Label color={colorLabel(idea.category.name)}>{idea.category.name}</Label>
             </Item.Meta>
             <Divider />
             <Item.Description>{idea.description}</Item.Description>

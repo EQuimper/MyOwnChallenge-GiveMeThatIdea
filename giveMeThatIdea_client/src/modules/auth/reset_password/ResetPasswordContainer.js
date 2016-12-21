@@ -24,7 +24,10 @@ class ResetPasswordContainer extends Component {
   }
   render () {
     const { params, resetPassword } = this.props;
-    return <ResetPassword resetToken={params.resetToken} resetPassword={resetPassword} />
+    return <ResetPassword
+      resetToken={params.resetToken}
+      resetPassword={resetPassword}
+    />
   }
 }
 

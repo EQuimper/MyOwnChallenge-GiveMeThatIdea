@@ -79,7 +79,7 @@ export const signupUser = values => dispatch => {
 export const checkToken = () => (dispatch, getState) => {
   dispatch({ type: CHECK_TOKEN });
   const { token } = getState().auth;
-  axios.post('/auth/checkToken', { token })
+  return axios.post('/auth/checkToken', { token })
     .then(res => dispatch({
       type: CHECK_TOKEN_SUCCESS,
       token: res.data.token,
@@ -105,7 +105,6 @@ export const logoutUser = () => (dispatch) => {
 }
 
 export const unauthUser = message => dispatch => {
-  console.log('UNUAUTH');
   dispatch({ type: UNAUTH_USER });
   toastr.error('Unauthorized', message);
   return browserHistory.push('/login');

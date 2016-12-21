@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FeedIdeas from './FeedIdeas';
 import { fetchAllIdeas, followIdea, unfollowIdea } from './actions';
+import { LoadingScreen } from '../../../commons';
 
 class FeedIdeasContainer extends Component {
-  componentWillMount () {
+  componentWillMount() {
     this.props.fetchAllIdeas();
   }
 
   render() {
     const { data, ideasFollow, followIdea, unfollowIdea } = this.props;
     if (!data.isFetched) {
-      return <h1>Loading...</h1>;
+      return <LoadingScreen />;
     } else if (!data.error) {
       return <FeedIdeas
         followIdea={followIdea}

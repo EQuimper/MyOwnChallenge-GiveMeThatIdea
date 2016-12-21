@@ -4,12 +4,11 @@ import axios from 'axios';
 import { Grid } from 'semantic-ui-react';
 import { CreateIdeaForm } from './components';
 import { createIdea } from './actions';
-
-// TODO: CHANGE LOADING FOR A SCREEN
+import { LoadingScreen } from '../../../commons';
 
 class CreateIdeaContainer extends Component {
   state = { categories: [], isFetching: false };
-  componentWillMount () {
+  componentWillMount() {
     this.setState({ isFetching: true });
     axios.get('/categories')
       .then(
@@ -24,13 +23,16 @@ class CreateIdeaContainer extends Component {
   }
   render() {
     if (this.state.isFetching) {
-      return <h1>Loading...</h1>;
+      return <LoadingScreen />;
     }
     return (
       <Grid centered columns={2}>
         <Grid.Column>
           <h1>Create an Idea</h1>
-          <CreateIdeaForm categories={this.state.categories} createIdea={this.props.createIdea} />
+          <CreateIdeaForm
+            categories={this.state.categories}
+            createIdea={this.props.createIdea}
+          />
         </Grid.Column>
       </Grid>
     );

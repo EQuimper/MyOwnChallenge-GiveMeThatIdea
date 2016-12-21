@@ -2,13 +2,20 @@ import React from 'react';
 import { Comment } from 'semantic-ui-react';
 import moment from 'moment';
 
-// http://semantic-ui.com/images/avatar/small/elliot.jpg
-// http://semantic-ui.com/images/avatar/small/jenny.jpg
-// http://semantic-ui.com/images/avatar/small/joe.jpg
 
-const CommentComponent = ({ text, author, dateCreated }) => (
+
+const avatar = [
+  'http://semantic-ui.com/images/avatar/small/matt.jpg',
+  'http://semantic-ui.com/images/avatar/small/elliot.jpg',
+  'http://semantic-ui.com/images/avatar/small/jenny.jpg',
+  'http://semantic-ui.com/images/avatar/small/joe.jpg'
+];
+
+const getRandomImage = index => avatar[index];
+
+const CommentComponent = ({ text, author, dateCreated, index }) => (
   <Comment>
-    <Comment.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />
+    <Comment.Avatar src={getRandomImage(index)} />
     <Comment.Content>
       <Comment.Author as="h5">{author}</Comment.Author>
       <Comment.Metadata>
