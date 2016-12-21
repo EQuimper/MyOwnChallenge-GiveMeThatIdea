@@ -3,6 +3,12 @@ import axios from 'axios';
 export const signupValidation = values => {
   const errors = {};
 
+  if (!values.username) {
+    errors.username = 'Username is Required';
+  } else if (values.username.length < 4) {
+    errors.username = 'Username too short';
+  }
+
   if (!values.password) {
     errors.password = 'Password is Required';
   } else if (!values.confirmPassword) {
@@ -22,10 +28,10 @@ export const signupValidation = values => {
 
 
 export const signupAsyncValidate = values => {
-  return axios.post('/auth/asyncemail', { email: values.email })
+  return axios.post('/auth/asyncUsername', { username: values.username })
     .then(res => {
       if (res.data.exist) {
-        throw { email: res.data.message };
+        throw { username: res.data.message };
       }
     });
 }
