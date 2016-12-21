@@ -16,11 +16,18 @@ const UserSchema = new Schema({
       trim: true
     }
   },
+  username: {
+    type: String,
+    unique: true,
+    trim: true,
+    minLength: [4, 'Username too short']
+  },
   role: {
     type: String,
     enum: ['Member', 'Admin'],
     default: 'Member'
   },
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date }
 }, { timestamps: true });
