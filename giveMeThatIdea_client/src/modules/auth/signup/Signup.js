@@ -68,11 +68,6 @@ const Signup = ({ handleSubmit, signupUser, valid }) => (
             <Icon name="help" />
             Already signed up?&nbsp;<Link to="/login">Login here</Link>&nbsp;instead.
           </Message>
-          <div>
-            <h5>You can use this platform for register too.</h5>
-            <Button circular color="facebook" icon="facebook" />
-            <Button circular color="black" icon="github" />
-          </div>
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -88,3 +83,9 @@ export default reduxForm({
 
             // <Button circular color="twitter" icon="twitter" />
             // <Button circular color="google plus" icon="google" />
+
+// <div>
+//             <h5>You can use this platform for register too.</h5>
+//             <Button circular color="facebook" icon="facebook" />
+//             <Button circular color="black" icon="github" />
+//           </div>

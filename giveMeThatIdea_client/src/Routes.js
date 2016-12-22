@@ -13,7 +13,8 @@ import {
   FeedIdeasContainer,
   IdeaPageContainer,
   Page404,
-  IdeasFollowContainer
+  IdeasFollowContainer,
+  HomePage
 } from './modules';
 
 const UserIsAuthenticated = UserAuthWrapper({
@@ -36,6 +37,7 @@ export default () => (
   <Router history={history}>
     <Route path="/" component={App}>
       <Route component={OnlyNotUser}>
+        <IndexRoute component={HomePage} />
         <Route path="/login" component={LoginContainer} />
         <Route path="/signup" component={SignupContainer} />
         <Route path="/resetPassword/:resetToken" component={ResetPasswordContainer} />
@@ -45,7 +47,6 @@ export default () => (
         <Route path="/ideas">
           <IndexRoute component={FeedIdeasContainer} />
           <Route path="new" component={CreateIdeaContainer} />
-          <Route path="follow" component={IdeasFollowContainer} />
           <Route path=":slug" component={IdeaPageContainer} />
         </Route>
       </Route>
@@ -53,3 +54,5 @@ export default () => (
     <Route path="*" component={Page404} />
   </Router>
 );
+
+// <Route path="follow" component={IdeasFollowContainer} />

@@ -20,9 +20,6 @@ const NavBar = ({ path, auth, toggleLogout }) => (
         </Menu.Menu>
       ) : (
         <Menu.Menu position="right">
-          <Menu.Item active={path === '/help'} onClick={() => browserHistory.push('/help')}>
-            How that work?
-          </Menu.Item>
           <Menu.Item onClick={() => toggleLogout()}>
             Logout
           </Menu.Item>
@@ -33,3 +30,8 @@ const NavBar = ({ path, auth, toggleLogout }) => (
 );
 
 export default NavBar;
+
+
+// <Menu.Item active={path === '/help'} onClick={() => browserHistory.push('/help')}>
+//             How that work?
+//           </Menu.Item>

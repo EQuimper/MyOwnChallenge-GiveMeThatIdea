@@ -57,17 +57,6 @@ const Login = ({ handleSubmit, loginUser, valid }) => (
             <Icon name="help" />
             No account yet?&nbsp;<Link to="/signup">Register here</Link>&nbsp;instead.
           </Message>
-          <div>
-            <h5>You can use this platform for login too.</h5>
-            <Button circular color="facebook" icon="facebook" />
-            <a href="http://localhost:3001/api/v1/auth/github">
-              <Button
-                circular
-                color="black"
-                icon="github"
-              />
-            </a>
-          </div>
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -81,3 +70,15 @@ export default reduxForm({
 
 // <Button circular color="twitter" icon="twitter" />
 // <Button circular color="google plus" icon="google" />
+
+// <div>
+//             <h5>You can use this platform for login too.</h5>
+//             <Button circular color="facebook" icon="facebook" />
+//             <a href="http://localhost:3001/api/v1/auth/github">
+//               <Button
+//                 circular
+//                 color="black"
+//                 icon="github"
+//               />
+//             </a>
+//           </div>

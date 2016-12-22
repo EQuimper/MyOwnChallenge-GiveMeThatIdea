@@ -15,14 +15,6 @@ const SideMenu = ({ path }) => (
         color={path === '/ideas' ? 'blue' : null}
       />
     </Menu.Item>
-    <Menu.Item>
-      My ideas
-      <Icon
-        name="idea"
-        size="large"
-        color={path === '/myideas' ? 'yellow' : null}
-      />
-    </Menu.Item>
     <Menu.Item
       active={path === '/ideas/new'}
       onClick={() => browserHistory.push('/ideas/new')}
@@ -34,18 +26,28 @@ const SideMenu = ({ path }) => (
         color={path === '/ideas/new' ? 'teal' : null}
       />
     </Menu.Item>
-    <Menu.Item
-      active={path === '/ideas/follow'}
-      onClick={() => browserHistory.push('/ideas/follow')}
-    >
-      Follow
-      <Icon
-        name="star"
-        size="large"
-        color={path === '/ideas/follow' ? 'green' : null}
-      />
-    </Menu.Item>
   </Menu>
 );
 
 export default SideMenu;
+
+// <Menu.Item
+//       active={path === '/ideas/follow'}
+//       onClick={() => browserHistory.push('/ideas/follow')}
+//     >
+//       Follow
+//       <Icon
+//         name="star"
+//         size="large"
+//         color={path === '/ideas/follow' ? 'green' : null}
+//       />
+//     </Menu.Item>
+
+// <Menu.Item>
+//       My ideas
+//       <Icon
+//         name="idea"
+//         size="large"
+//         color={path === '/myideas' ? 'yellow' : null}
+//       />
+//     </Menu.Item>
