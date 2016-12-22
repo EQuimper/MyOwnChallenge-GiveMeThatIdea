@@ -103,12 +103,17 @@ export const signup = (req, res) => {
       const newUser = new User({ local: { email, password }, username });
 
       newUser.save()
-        .then(user => res.status(201).json({
-          success: true,
-          message: 'Successfully register!',
-          token: `JWT ${generateToken(user)}`,
-          user: setUserInfo(user)
-        }))
+        .then(user => {
+          emailHelpers(user, 'GiveMeThatIdea - Welcome', null, null, err => { // eslint-disable-line
+            if (err) { return console.log(err); }
+          });
+          return res.status(201).json({
+            success: true,
+            message: 'Successfully register!',
+            token: `JWT ${generateToken(user)}`,
+            user: setUserInfo(user)
+          });
+        })
         .catch(err => {
           let error;
           if (err.code === 11000) {
