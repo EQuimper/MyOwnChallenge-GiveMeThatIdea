@@ -45,9 +45,6 @@ const FeedIdeas = ({ ideas, ideasFollow, followIdea, unfollowIdea }) => (
               <br />
             </Card.Content>
             <Card.Content extra>
-              <LikesGroup liked={10} disliked={5} />
-            </Card.Content>
-            <Card.Content extra>
               <div className="ui two buttons">
                 {checkIfFollow(ideasFollow.ideas, idea._id) ? (
                   <Button
@@ -82,3 +79,7 @@ const FeedIdeas = ({ ideas, ideasFollow, followIdea, unfollowIdea }) => (
 );
 
 export default FeedIdeas;
+
+// <Card.Content extra>
+//               <LikesGroup liked={10} disliked={5} />
+//             </Card.Content>

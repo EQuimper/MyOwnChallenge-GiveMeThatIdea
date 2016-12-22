@@ -13,17 +13,26 @@ const routingMiddleware = routerMiddleware(browserHistory);
 const persistedState = loadState();
 
 const middlewares = [
-  createLogger(),
   promise(),
   thunk,
   routingMiddleware
 ];
 
+const middlewareDev = [
+  createLogger()
+];
+
 // Set var for all the middleware + redux chrome extension
-const enhancers = compose(
-  applyMiddleware(...middlewares),
-  window.devToolsExtension ? window.devToolsExtension() : f => f
-);
+let enhancers;
+
+if (process.env.NODE_ENV !== 'production') {
+  enhancers = compose(
+    applyMiddleware(...middlewares, ...middlewareDev),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  );
+} else {
+  enhancers = compose(applyMiddleware(...middlewares));
+}
 
 // Create the store with the (reducer, initialState, compose)
 const store = createStore(

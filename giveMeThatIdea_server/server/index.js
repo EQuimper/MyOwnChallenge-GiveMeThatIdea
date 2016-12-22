@@ -20,6 +20,13 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  return res.status(err.status || PORT).render('500');
+});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
@@ -34,5 +41,5 @@ app.use('/api/v1', [
 
 app.listen(PORT, err => {
   if (err) return console.log(`Error happen: ${err}`); // eslint-disable-line
-  console.log(`Server run on ${CLIENT_ROOT}`); // eslint-disable-line
+  console.log(`Server run on http://localhost:${PORT}`); // eslint-disable-line
 });
