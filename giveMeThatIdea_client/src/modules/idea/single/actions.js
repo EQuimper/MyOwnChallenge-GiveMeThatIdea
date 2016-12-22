@@ -33,14 +33,23 @@ export const fetchIdea = slug => dispatch => {
 }
 
 export const createComment = values => (dispatch, getState) => {
+  const { username } = getState().auth.user;
   const ideaId = getState().api.idea.idea._id;
   const { text } = values;
   dispatch({ type: CREATE_COMMENT });
   return axios.post(`/ideas/${ideaId}/comments/new`, { text })
     .then(
       res => {
-        dispatch(reset('createComment'));
-        return dispatch({ type: CREATE_COMMENT_SUCCESS, comment: res.data.comment });
+        const comment = {
+          text: res.data.text,
+          author: {
+            username
+          },
+          _id: res.data._id,
+          createdAt: res.data.createdAt
+        };
+        dispatch({ type: CREATE_COMMENT_SUCCESS, comment });
+        return dispatch(reset('createComment'));
       },
       error => {
         toastr.error('Something Wrong Happen!');
