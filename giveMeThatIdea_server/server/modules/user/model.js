@@ -16,6 +16,16 @@ const UserSchema = new Schema({
       trim: true
     }
   },
+  // github: {
+  //   id: {
+  //     type: String,
+  //     unique: true
+  //   },
+  //   username: String,
+  //   email: String,
+  //   token: String,
+  //   avatar: String
+  // },
   username: {
     type: String,
     unique: true,
@@ -26,6 +36,11 @@ const UserSchema = new Schema({
     type: String,
     enum: ['Member', 'Admin'],
     default: 'Member'
+  },
+  provider: {
+    type: String,
+    enum: ['github', 'facebook', 'local'],
+    default: 'local'
   },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   ideasFollow: [{ type: Schema.Types.ObjectId, ref: 'Idea' }],

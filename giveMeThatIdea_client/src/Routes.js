@@ -12,7 +12,8 @@ import {
   ForgotPasswordContainer,
   FeedIdeasContainer,
   IdeaPageContainer,
-  Page404
+  Page404,
+  IdeasFollowContainer
 } from './modules';
 
 const UserIsAuthenticated = UserAuthWrapper({
@@ -44,6 +45,7 @@ export default () => (
         <Route path="/ideas">
           <IndexRoute component={FeedIdeasContainer} />
           <Route path="new" component={CreateIdeaContainer} />
+          <Route path="follow" component={IdeasFollowContainer} />
           <Route path=":slug" component={IdeaPageContainer} />
         </Route>
       </Route>

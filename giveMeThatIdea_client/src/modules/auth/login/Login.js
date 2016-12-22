@@ -60,7 +60,13 @@ const Login = ({ handleSubmit, loginUser, valid }) => (
           <div>
             <h5>You can use this platform for login too.</h5>
             <Button circular color="facebook" icon="facebook" />
-            <Button circular color="black" icon="github" />
+            <a href="http://localhost:3001/api/v1/auth/github">
+              <Button
+                circular
+                color="black"
+                icon="github"
+              />
+            </a>
           </div>
         </Grid.Column>
       </Grid.Row>

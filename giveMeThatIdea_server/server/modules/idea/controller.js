@@ -225,5 +225,9 @@ export const unfollowIdea = (req, res) => {
 };
 
 export const getAllFollowIdea = (req, res) => {
-  // const { userId } = req.
+  return Idea.find({ usersFollow: req.user._id })
+    .then(
+      ideasFollow => res.status(200).json({ success: true, ideasFollow }),
+      error => res.status(422).json({ success: false, error })
+    );
 };

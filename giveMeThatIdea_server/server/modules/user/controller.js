@@ -2,6 +2,7 @@ import { isEmail } from 'validator';
 import crypto from 'crypto';
 import User from './model';
 import { setUserInfo, generateToken, emailHelpers } from '../../helpers';
+import '../../config/passportConfig';
 
 /*
 * ASYNC EMAIL
@@ -34,6 +35,39 @@ export const asyncUsername = (req, res) => {
     })
     .catch(err => res.json({ err }));
 };
+
+// const githubOpts = {
+//   failureRedirect: '/',
+//   successRedirect: '/',
+//   session: false,
+// };
+
+/*
+* GITHUB AUTH
+*/
+// export const loginGithub = (req, res, next) => {
+//   console.log({ req, res });
+// };
+
+// export const loginGithub2 = (req, res, next) => {
+//   console.log({ req, res });
+//   console.log('USER', req.user);
+//   res.redirect('http://localhost:3000');
+// };
+
+// export const loginGithub = (req, res, next) => {
+//   passport.authenticate('github', { successRedirect: '/', session: false }, (err, user) => {
+//     if (err) {
+//       return res.status(401).json({ success: false, message: 'Authentication failed!' });
+//     }
+
+//     if (!user) {
+//       return res.status(401).json({ success: false, message: 'No user found!' });
+//     }
+
+//     return res.status(200).json({ success: true, token: `JWT ${generateToken(user)}`, user });
+//   })(req, res, next);
+// };
 
 /*
 * LOGIN
@@ -124,7 +158,6 @@ export const forgotPassword = (req, res) => {
 */
 export const resetPassword = (req, res) => {
   const { resetToken } = req.params;
-  const { password } = req.body;
   if (!resetToken) {
     return res.status(404).json({ success: false, message: 'Not supposed to be there' });
   }

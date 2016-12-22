@@ -8,12 +8,14 @@ import {
   IdeaReducer,
   ModalReducer,
   CommentReducer,
-  IdeasFollowReducer
+  IdeasFollowReducer,
+  IdeasFollowReducerApi
 } from '../../modules';
 
 const apiReducer = combineReducers({
   ideas: IdeasReducer,
   idea: IdeaReducer,
+  ideasFollow: IdeasFollowReducerApi
 });
 
 const uiReducer = combineReducers({

@@ -34,12 +34,15 @@ const SideMenu = ({ path }) => (
         color={path === '/ideas/new' ? 'teal' : null}
       />
     </Menu.Item>
-    <Menu.Item>
+    <Menu.Item
+      active={path === '/ideas/follow'}
+      onClick={() => browserHistory.push('/ideas/follow')}
+    >
       Follow
       <Icon
         name="star"
         size="large"
-        color={path === '/follow' ? 'green' : null}
+        color={path === '/ideas/follow' ? 'green' : null}
       />
     </Menu.Item>
   </Menu>
