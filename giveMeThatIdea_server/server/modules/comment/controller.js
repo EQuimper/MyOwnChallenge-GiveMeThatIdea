@@ -2,12 +2,15 @@ import Comment from './model';
 import { Idea } from '../idea';
 import { User } from '../user';
 
-const setCommentInfo = comment => ({
-  text: comment.text,
-  author: comment.author,
-  createdAt: comment.createdAt,
-  idea: comment.idea
-});
+const setCommentInfo = comment => {
+  console.log({ comment });
+  return {
+    text: comment.text,
+    author: comment.author.username,
+    createdAt: comment.createdAt,
+    idea: comment.idea
+  }
+};
 
 export const createComment = (req, res) => {
   const { text } = req.body;
