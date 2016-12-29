@@ -8,6 +8,7 @@
     "babel-register": "^6.18.0",
     "bcrypt": "^1.0.1",
     "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
     "express": "^4.14.0",
     "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.7.3",

@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import passport from 'passport';
+import compression from 'compression';
 import serverConfig from './config/serverConfig';
 import './config/dbConfig';
 import { userRoutes, ideaRoutes, categoryRoutes, commentRoutes } from './modules';
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(passport.initialize());
+app.use(compression());
 
 app.use('/api/v1', [
   userRoutes,
