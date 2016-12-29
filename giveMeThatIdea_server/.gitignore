@@ -2,3 +2,4 @@ node_modules/
 .vscode/
 # server/config
 !server/config/passportConfig.js
+!server/config/dbConfig.js
